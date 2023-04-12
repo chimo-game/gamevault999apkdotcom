@@ -129,6 +129,16 @@ body {
   overflow: hidden;
 }
 
+#homepage_hero_party {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+#homepage_hero_party img {
+  width: 24px;
+}
+
 body.loaded {
   overflow: visible;
 }
