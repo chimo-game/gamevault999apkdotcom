@@ -5,7 +5,7 @@
 /**
  * copyright 2022 codewithsadee
  */
-
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap");
 /*-----------------------------------*\
   #CUSTOM PROPERTY
 \*-----------------------------------*/
@@ -30,7 +30,7 @@
    * typography
    */
 
-  --ff-gilroy: "Gilroy", sans-serif;
+  --ff-gilroy: "Ubuntu", sans-serif;
 
   --headline-lg: 4.8rem;
   --headline-md: 3rem;
@@ -129,7 +129,8 @@ body {
   overflow: hidden;
 }
 
-#homepage_hero_party {
+#homepage_hero_party,
+.header-money {
   display: flex;
   gap: 5px;
   justify-content: center;
@@ -137,6 +138,11 @@ body {
 }
 #homepage_hero_party img {
   width: 24px;
+}
+
+.header-money {
+  margin-top: 50px;
+  font-size: 20px;
 }
 
 body.loaded {

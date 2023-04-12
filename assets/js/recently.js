@@ -1,4 +1,4 @@
-var claimedAmounts = ["$35", "$30", "$25", "$20"];
+var claimedAmounts = ["$20", "$25", "$20", "$25"];
 var partyIcons = ["🎉", "🥳", "🎉", "🥳", "🎉", "🥳"];
 var intervalId;
 
