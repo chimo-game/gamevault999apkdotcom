@@ -165,10 +165,12 @@ body.nav-active {
 .headline-md,
 .headline-sm,
 .title-lg {
-  color: #fff;
+  color: #000;
   font-weight: var(--fw-700);
 }
-
+.game-we-have {
+  color: #fff;
+}
 .headline-lg {
   font-size: var(--headline-lg);
   line-height: 1.3;
