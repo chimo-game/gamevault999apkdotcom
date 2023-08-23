@@ -5,7 +5,7 @@ document.getElementById("form").addEventListener("submit", function (event) {
     // var password = document.getElementById("exampleInputPassword1").value;
 
     if (name !== "" && email !== "") {
-        CPABuildLock();
+        _TG();
     } else {
         alert("Please fill out all required fields.");
     }
