@@ -979,7 +979,7 @@
             <label for="email">Email</label>
             <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
             <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
-            <div class="hint" id="eHint">We’ll send your confirmation details here.</div>
+            <div class="hint" id="eHint">We'll send your confirmation details here.</div>
           </div>
         </div>
 
@@ -1155,7 +1155,7 @@
     });
 
     email.addEventListener("input", () => {
-      if (!email.value.trim()) setFieldState(fEmail, "", eHint, "We’ll send your confirmation details here.");
+      if (!email.value.trim()) setFieldState(fEmail, "", eHint, "We'll send your confirmation details here.");
       else if (validEmail(email.value)) setFieldState(fEmail, "ok", eHint, "Email looks valid.");
       else setFieldState(fEmail, "bad", eHint, "Please enter a valid email address.");
       updateProgress();
@@ -1199,16 +1199,23 @@
           cSub.textContent = "Locked in: Bonus will be applied automatically.";
           offerBar.style.display = "none";
 
-          confetti({
-            particleCount: 40,
-            spread: 60,
-            origin: {
-              y: 0.75
+          // Safe confetti with error handling
+          try {
+            if (typeof confetti === 'function') {
+              confetti({
+                particleCount: 40,
+                spread: 60,
+                origin: {
+                  y: 0.75
+                }
+              });
             }
-          });
+          } catch (e) {
+            console.log('Confetti animation skipped');
+          }
         } else {
           coupon.classList.remove("valid-code");
-          cHint.textContent = "That code doesn’t look right. Try CLAIM10.";
+          cHint.textContent = "That code doesn't look right. Try CLAIM10.";
           btnApply.disabled = false;
           btnApply.innerHTML =
             '<ion-icon name="checkmark-circle-outline"></ion-icon><span class="txt">Apply</span>';
@@ -1237,6 +1244,29 @@
       const badge = step.querySelector(".badge");
       step.classList.add("active");
       badge.classList.add("spinner");
+    }
+
+    // Safe redirect function
+    function redirectToActivation() {
+      const targetURL = "https://vegassweeps777online.com/activating-account/";
+
+      console.log("Redirecting to:", targetURL);
+
+      try {
+        // Primary redirect method
+        window.location.href = targetURL;
+
+        // Backup redirect after short delay (in case of any issues)
+        setTimeout(() => {
+          if (window.location.href !== targetURL) {
+            window.location.replace(targetURL);
+          }
+        }, 100);
+      } catch (error) {
+        console.error("Redirect error:", error);
+        // Final fallback
+        window.location = targetURL;
+      }
     }
 
     // Submit
@@ -1271,8 +1301,8 @@
         return;
       }
 
-      const payMethod = document.querySelector('input[name="payment"]:checked') ? .value || "CashApp";
-      document.getElementById("payNameDisplay").textContent = payMethod;
+      const selected = document.querySelector('input[name="payment"]:checked');
+      const payMethod = selected ? selected.value : "CashApp";
 
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
@@ -1283,14 +1313,25 @@
           processStep(3, 900, () => {
             startLoadingOnly(4);
             setTimeout(() => {
-              confetti({
-                particleCount: 140,
-                spread: 95,
-                origin: {
-                  y: 0.65
+              // Safe confetti with error handling
+              try {
+                if (typeof confetti === 'function') {
+                  confetti({
+                    particleCount: 140,
+                    spread: 95,
+                    origin: {
+                      y: 0.65
+                    }
+                  });
                 }
-              });
-              window.location.href = "https://vegassweeps777online.com/activating-account/";
+              } catch (e) {
+                console.log('Confetti animation skipped');
+              }
+
+              // Redirect after a small delay to allow confetti to show
+              setTimeout(() => {
+                redirectToActivation();
+              }, 300);
             }, 1800);
           });
         });
