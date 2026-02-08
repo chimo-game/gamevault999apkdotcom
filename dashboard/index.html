@@ -718,16 +718,17 @@
         </div>`;
       });
 
-      // Get country data
+      // Get country data (client-side filter to avoid composite index)
       const countrySnap = await db.collection(DB_PREFIX + 'events')
-        .where('event', '==', 'page_view')
         .orderBy('timestamp', 'desc')
-        .limit(200)
+        .limit(300)
         .get();
       const countryCounts = {};
       countrySnap.forEach(doc => {
-        const c = doc.data().country || 'Unknown';
-        const cc = doc.data().countryCode || 'XX';
+        const d = doc.data();
+        if (d.event !== 'page_view') return;
+        const c = d.country || 'Unknown';
+        const cc = d.countryCode || 'XX';
         const key = cc + '|' + c;
         countryCounts[key] = (countryCounts[key] || 0) + 1;
       });
