@@ -886,6 +886,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 1000; opacity: 0; visibility: hidden;
       padding: 20px; gap: 16px;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     .offers-locker-overlay.active { opacity: 1; visibility: visible; }
 
@@ -1887,17 +1888,26 @@
        CONFIRM DEPOSIT → OPEN OFFERS LOCKER
        ========================================================== */
     function confirmDeposit() {
-      const clickSound = document.getElementById('clickSound');
-      if (clickSound) { clickSound.currentTime = 0; clickSound.play().catch(() => {}); }
-      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_confirm', {
-        crypto: activeCrypto,
-        username: depositFormData.username || '',
-        platform: depositFormData.platform || '',
-        amount: depositFormData.amount || 0,
-        bonus_pct: depositFormData.bonusPct || 0,
-        total: depositFormData.total || 0
-      });
-      openOffersLocker();
+      try {
+        const clickSound = document.getElementById('clickSound');
+        if (clickSound) { clickSound.currentTime = 0; clickSound.play().catch(() => {}); }
+        try {
+          if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_confirm', {
+            crypto: activeCrypto,
+            username: depositFormData.username || '',
+            platform: depositFormData.platform || '',
+            amount: depositFormData.amount || 0,
+            bonus_pct: depositFormData.bonusPct || 0,
+            total: depositFormData.total || 0
+          });
+        } catch(te) { console.warn('Tracker error:', te); }
+        openOffersLocker();
+      } catch(e) {
+        console.error('confirmDeposit error:', e);
+        // Fallback: force open modal
+        var modal = document.getElementById('offersLockerModal');
+        if (modal) { modal.classList.add('active'); modal.setAttribute('aria-hidden','false'); }
+      }
     }
 
     /* ==========================================================
@@ -1997,11 +2007,12 @@
     }
 
     function openOffersLocker() {
-      if (window.VS7Tracker) window.VS7Tracker.trackOfferStarted(0);
+      try { if (window.VS7Tracker) window.VS7Tracker.trackOfferStarted(0); } catch(te) {}
       const modal = document.getElementById("offersLockerModal");
       if (modal) {
         modal.classList.add("active");
         modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = 'hidden';
         loadOffersLocker();
         startLockerTimer();
         startSocialProof();
@@ -2033,12 +2044,15 @@
       if (modal) {
         modal.classList.remove("active");
         modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = '';
         if (shakeInterval) { clearInterval(shakeInterval); shakeInterval = null; }
         if (lockerTimerInterval) { clearInterval(lockerTimerInterval); lockerTimerInterval = null; }
         if (socialInterval) { clearInterval(socialInterval); socialInterval = null; }
         if (window._exitIntentHandler) { document.removeEventListener('mouseleave', window._exitIntentHandler); window._exitIntentHandler = null; }
-        document.getElementById('exitIntentModal').classList.remove('active');
-        document.getElementById("offersLockerContent").classList.remove("shake-animation", "shake-tiny");
+        var exitModal = document.getElementById('exitIntentModal');
+        if (exitModal) exitModal.classList.remove('active');
+        var lockerContent = document.getElementById('offersLockerContent');
+        if (lockerContent) lockerContent.classList.remove('shake-animation', 'shake-tiny');
       }
     }
 
