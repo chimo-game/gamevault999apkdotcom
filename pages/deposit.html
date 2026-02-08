@@ -141,7 +141,7 @@
     /* ---- Crypto Selector ---- */
     .crypto-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 28px;
     }
@@ -645,7 +645,7 @@
 
     /* ---- Responsive ---- */
     @media (max-width: 520px) {
-      .crypto-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .crypto-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
       .crypto-btn { padding: 14px 8px; }
       .crypto-btn img { width: 30px; height: 30px; }
       .crypto-btn .crypto-name { font-size: 0.72rem; }
@@ -709,6 +709,16 @@
         <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/usdt.png" alt="USDT">
         <div class="crypto-name">Tether</div>
         <div class="crypto-ticker">USDT</div>
+      </div>
+      <div class="crypto-btn" data-crypto="usdc" onclick="selectCrypto('usdc')">
+        <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/usdc.png" alt="USDC">
+        <div class="crypto-name">USD Coin</div>
+        <div class="crypto-ticker">USDC</div>
+      </div>
+      <div class="crypto-btn" data-crypto="trx" onclick="selectCrypto('trx')">
+        <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/trx.png" alt="Tron">
+        <div class="crypto-name">Tron</div>
+        <div class="crypto-ticker">TRX</div>
       </div>
       <div class="crypto-btn" data-crypto="xrp" onclick="selectCrypto('xrp')">
         <img src="https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/xrp.png" alt="XRP">
@@ -902,10 +912,26 @@
       usdt: {
         name: 'Tether',
         ticker: 'USDT',
-        network: 'ERC-20 / Ethereum',
+        network: 'BNB Smart Chain (BEP20)',
         qr: '/assets/images/crypto_qr/USDT_QR.jpg',
         address: '0x9c1fff5158a14bded845fb4b2c53edc64bed6e66',
         color: '#26a17b'
+      },
+      usdc: {
+        name: 'USD Coin',
+        ticker: 'USDC',
+        network: 'BNB Smart Chain (BEP20)',
+        qr: '/assets/images/crypto_qr/USDC_QR.jpg',
+        address: '0x9c1fff5158a14bded845fb4b2c53edc64bed6e66',
+        color: '#2775ca'
+      },
+      trx: {
+        name: 'Tron',
+        ticker: 'TRX',
+        network: 'Tron Network (TRC20)',
+        qr: '/assets/images/crypto_qr/Tron_QR.jpg',
+        address: 'TUsKCntkhEdgbTU71x3UzFQxHziyuQCjor',
+        color: '#ff0013'
       },
       xrp: {
         name: 'Ripple',
