@@ -551,6 +551,90 @@
       gap: 16px;
     }
 
+    /* Active Lockers */
+    .active-lockers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .locker-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .locker-card.hot {
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.1);
+    }
+    .locker-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .locker-card-name {
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .locker-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      animation: pulseDot 1.5s infinite;
+    }
+    .locker-pulse.idle {
+      background: var(--text-muted);
+      animation: none;
+      opacity: 0.4;
+    }
+    .locker-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .locker-stat {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .locker-stat strong {
+      color: var(--text);
+      font-size: 13px;
+    }
+    .locker-activity-bar {
+      height: 3px;
+      border-radius: 2px;
+      background: var(--surface-2);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .locker-activity-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--purple), #818cf8);
+      transition: width 0.6s ease;
+    }
+    .locker-last-activity {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
     /* Table scroll wrapper */
     .table-scroll {
       overflow-x: auto;
@@ -801,6 +885,8 @@
 
       // Start real-time listener for new conversions (toasts)
       listenForNewLeads();
+      // Start real-time listener for active lockers
+      listenForActiveLockers();
 
       loadTab('overview');
 
@@ -1122,6 +1208,15 @@
           <div class="stat-card"><div class="label">Coupons Used</div><div class="value">${totals.coupons_applied.toLocaleString()}</div></div>
         </div>
 
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-header">
+            <h3><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:6px;animation:pulseDot 1.5s infinite"></span>Locker Performance <span style="font-weight:400;font-size:12px;color:var(--text-muted)">(real-time from ad network)</span></h3>
+          </div>
+          <div class="active-lockers-grid" id="activeLockers">
+            ${lockerListenerReady ? '' : '<p style="color:var(--text-muted);font-size:13px;padding:8px 0">Loading real-time data...</p>'}
+          </div>
+        </div>
+
         <div class="grid-2">
           <div class="panel">
             <div class="panel-header"><h3>Conversion Funnel</h3></div>
@@ -1159,6 +1254,9 @@
           ${eventsHTML || '<p style="color:var(--text-muted);font-size:13px">No events recorded yet. Visit your site to generate data.</p>'}
         </div>
       `;
+
+      // Render locker data if already loaded by the real-time listener
+      if (lockerListenerReady) renderActiveLockers();
     }
 
     /* ---- Conversions ---- */
@@ -1430,6 +1528,115 @@
     }
 
     /* ==========================================================
+       LOCKER PERFORMANCE — REAL-TIME FROM AD NETWORK
+       ========================================================== */
+    let lockerData = {};
+    let lockerListenerReady = false;
+
+    function listenForActiveLockers() {
+      if (!db) return;
+      // Listen to conversions in real-time (postback data from ad network)
+      db.collection(DB_PREFIX + 'conversions')
+        .orderBy('timestamp', 'desc')
+        .limit(200)
+        .onSnapshot(snap => {
+          const fresh = {};
+
+          snap.forEach(doc => {
+            const c = doc.data();
+            // s1 = locker name passed via offer URL, fallback to offer name/id
+            const locker = c.s1 || c.offer_name || c.offer_id || 'Unknown';
+            const ts = c.timestamp ? c.timestamp.toDate().getTime() : 0;
+            const isChargebk = c.is_chargeback === true;
+            const payout = c.payout || 0;
+
+            if (!fresh[locker]) fresh[locker] = {
+              conversions: 0, revenue: 0, chargebacks: 0,
+              lastSeen: 0, countries: new Set(), offers: new Set(),
+              ips: new Set(), firstSeen: Infinity
+            };
+            const entry = fresh[locker];
+            if (ts > entry.lastSeen) entry.lastSeen = ts;
+            if (ts < entry.firstSeen) entry.firstSeen = ts;
+            if (c.country_code) entry.countries.add(c.country_code);
+            if (c.offer_name || c.offer_id) entry.offers.add(c.offer_name || c.offer_id);
+            if (c.ip) entry.ips.add(c.ip);
+
+            if (isChargebk) {
+              entry.chargebacks++;
+            } else {
+              entry.conversions++;
+              entry.revenue += payout;
+            }
+          });
+
+          lockerData = fresh;
+          lockerListenerReady = true;
+          renderActiveLockers();
+        });
+    }
+
+    function renderActiveLockers() {
+      const container = document.getElementById('activeLockers');
+      if (!container) return;
+
+      const entries = Object.entries(lockerData)
+        .map(([name, d]) => ({
+          name,
+          conversions: d.conversions,
+          revenue: d.revenue,
+          chargebacks: d.chargebacks,
+          countries: d.countries,
+          offers: d.offers,
+          uniqueIPs: d.ips.size,
+          lastSeen: d.lastSeen,
+          firstSeen: d.firstSeen,
+          total: d.conversions + d.chargebacks
+        }))
+        .sort((a, b) => b.revenue - a.revenue);
+
+      if (entries.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:8px 0">No locker conversions yet. Conversions will appear here in real-time as postbacks come in.</p>';
+        return;
+      }
+
+      const maxRev = Math.max(...entries.map(e => e.revenue), 1);
+      const now = Date.now();
+
+      container.innerHTML = entries.map(l => {
+        const ago = now - l.lastSeen;
+        const isRecent = ago < 60 * 60 * 1000; // last hour
+        const isHot = l.conversions >= 3 || l.revenue >= 2;
+        const agoStr = ago < 60000 ? 'just now'
+          : ago < 3600000 ? Math.round(ago / 60000) + 'm ago'
+          : ago < 86400000 ? Math.round(ago / 3600000) + 'h ago'
+          : Math.round(ago / 86400000) + 'd ago';
+        const barPct = Math.max(8, Math.round((l.revenue / maxRev) * 100));
+        const flags = [...l.countries].slice(0, 4).map(cc => countryFlag(cc)).join(' ');
+        const epc = l.conversions > 0 ? (l.revenue / l.conversions).toFixed(2) : '0.00';
+        const offerList = [...l.offers].slice(0, 3).join(', ');
+
+        return `<div class="locker-card${isHot ? ' hot' : ''}">
+          <div class="locker-card-header">
+            <span class="locker-card-name" title="${l.name}">${l.name}</span>
+            <span class="locker-pulse${isRecent ? '' : ' idle'}" title="${isRecent ? 'Active recently' : 'Idle'}"></span>
+          </div>
+          <div class="locker-stats">
+            <span class="locker-stat" title="Conversions"><ion-icon name="checkmark-circle" style="color:#10b981"></ion-icon> <strong style="color:#10b981">${l.conversions}</strong></span>
+            <span class="locker-stat" title="Revenue"><ion-icon name="cash-outline" style="color:#f59e0b"></ion-icon> <strong style="color:#f59e0b">$${l.revenue.toFixed(2)}</strong></span>
+            <span class="locker-stat" title="EPC (Earnings Per Conversion)"><ion-icon name="analytics-outline"></ion-icon> <strong>$${epc}</strong></span>
+            ${l.chargebacks ? '<span class="locker-stat" title="Chargebacks"><ion-icon name="alert-circle" style="color:#ef4444"></ion-icon> <strong style="color:#ef4444">' + l.chargebacks + '</strong></span>' : ''}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+            <span class="locker-last-activity">${agoStr} · ${l.uniqueIPs} unique IP${l.uniqueIPs !== 1 ? 's' : ''}${flags ? ' · ' + flags : ''}</span>
+          </div>
+          ${offerList ? '<div class="locker-last-activity" title="Offers: ' + offerList + '" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><ion-icon name="document-text-outline" style="font-size:12px;vertical-align:-1px"></ion-icon> ' + offerList + '</div>' : ''}
+          <div class="locker-activity-bar"><div class="locker-activity-fill" style="width:${barPct}%"></div></div>
+        </div>`;
+      }).join('');
+    }
+
+    /* ==========================================================
        LEAD TOAST + SOUND
        ========================================================== */
     let leadListenerInitial = true;
@@ -1477,7 +1684,7 @@
         toast.querySelector && (toast.style.cssText += '--timer-color: #ef4444;');
       }
 
-      const icon = isChargeback ? '⚠️' : '💰';
+      const icon = isChargeback ? '<ion-icon name="alert-circle" style="font-size:22px;color:#ef4444"></ion-icon>' : '<ion-icon name="cash" style="font-size:22px;color:#10b981"></ion-icon>';
       const title = isChargeback ? 'Chargeback' : 'New Lead!';
       const titleColor = isChargeback ? '#ef4444' : '#10b981';
       const payoutColor = isChargeback ? '#ef4444' : '#f59e0b';
