@@ -1005,6 +1005,11 @@
                 <div class="funnel-label">Clicked</div>
               </div>
               <div class="funnel-step">
+                <div class="funnel-bar" style="height:32px;background:#f97316"></div>
+                <div class="funnel-value" style="color:#f97316">68</div>
+                <div class="funnel-label">Leads</div>
+              </div>
+              <div class="funnel-step">
                 <div class="funnel-bar" style="height:25px;background:var(--success)"></div>
                 <div class="funnel-value" style="color:var(--success)">42</div>
                 <div class="funnel-label">Activated</div>
@@ -1235,6 +1240,11 @@
                 <div class="funnel-bar" style="height:${barH(totals.offers_clicked, totals.total_views)}px;background:var(--purple)"></div>
                 <div class="funnel-value">${totals.offers_clicked.toLocaleString()}</div>
                 <div class="funnel-label">Offers Clicked</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-bar" style="height:${barH(totals.conversions, totals.total_views)}px;background:#f97316"></div>
+                <div class="funnel-value" style="color:#f97316">${totals.conversions.toLocaleString()}</div>
+                <div class="funnel-label">Leads</div>
               </div>
               <div class="funnel-step">
                 <div class="funnel-bar" style="height:${barH(totals.accounts_activated, totals.total_views)}px;background:var(--success)"></div>
