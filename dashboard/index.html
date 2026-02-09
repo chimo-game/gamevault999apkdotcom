@@ -597,9 +597,24 @@
             <div class="change up">↑ 8% vs yesterday</div>
           </div>
           <div class="stat-card">
-            <div class="label">Offers Completed</div>
+            <div class="label">Offers Clicked</div>
             <div class="value">96</div>
             <div class="change up">↑ 15% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Offers Completed / Leads</div>
+            <div class="value" style="color:var(--purple)">12</div>
+            <div class="change up">↑ 3 vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Completion Rate</div>
+            <div class="value">12.5%</div>
+            <div class="change up">↑ 2.1% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Revenue</div>
+            <div class="value" style="color:var(--warning)">$8.64</div>
+            <div class="change up">↑ $2.10 vs yesterday</div>
           </div>
           <div class="stat-card">
             <div class="label">Accounts Activated</div>
@@ -610,11 +625,6 @@
             <div class="label">Conversion Rate</div>
             <div class="value">3.4%</div>
             <div class="change up">↑ 0.3% vs yesterday</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Avg Time on Page</div>
-            <div class="value">2m 14s</div>
-            <div class="change down">↓ 5s vs yesterday</div>
           </div>
         </div>
 
@@ -635,7 +645,7 @@
               <div class="funnel-step">
                 <div class="funnel-value">96</div>
                 <div class="funnel-bar" style="height:60px;background:var(--purple)"></div>
-                <div class="funnel-label">Offers</div>
+                <div class="funnel-label">Clicked</div>
               </div>
               <div class="funnel-step">
                 <div class="funnel-value" style="color:var(--success)">42</div>
@@ -692,7 +702,7 @@
             </div>
             <div class="event-row">
               <div class="event-dot offer"></div>
-              <div class="event-text"><strong>Offer Completed</strong> — Fire Kirin — CA</div>
+              <div class="event-text"><strong>Offer Clicked</strong> — Fire Kirin — CA</div>
               <div class="event-time">5m ago</div>
             </div>
             <div class="event-row">
@@ -759,7 +769,7 @@
         .where('date', '<=', range.end)
         .get();
 
-      let totals = { total_views: 0, signup_clicks: 0, offers_started: 0, offers_completed: 0, accounts_activated: 0, coupons_applied: 0, processing_started: 0 };
+      let totals = { total_views: 0, signup_clicks: 0, offers_started: 0, offers_clicked: 0, accounts_activated: 0, coupons_applied: 0, processing_started: 0, conversions: 0, revenue: 0, chargebacks: 0 };
       statsSnap.forEach(doc => {
         const d = doc.data();
         Object.keys(totals).forEach(k => { totals[k] += d[k] || 0; });
@@ -767,6 +777,10 @@
 
       const convRate = totals.total_views > 0
         ? ((totals.accounts_activated / totals.total_views) * 100).toFixed(1) + '%'
+        : '0%';
+
+      const completionRate = totals.offers_clicked > 0
+        ? ((totals.conversions / totals.offers_clicked) * 100).toFixed(1) + '%'
         : '0%';
 
       // Get recent events
@@ -828,7 +842,10 @@
         <div class="stats-grid">
           <div class="stat-card"><div class="label">Page Views</div><div class="value">${totals.total_views.toLocaleString()}</div></div>
           <div class="stat-card"><div class="label">Signup Clicks</div><div class="value">${totals.signup_clicks.toLocaleString()}</div></div>
-          <div class="stat-card"><div class="label">Offers Completed</div><div class="value">${totals.offers_completed.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Offers Clicked</div><div class="value">${totals.offers_clicked.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Offers Completed / Leads</div><div class="value" style="color:var(--purple)">${totals.conversions.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Completion Rate</div><div class="value">${completionRate}</div></div>
+          <div class="stat-card"><div class="label">Revenue</div><div class="value" style="color:var(--warning)">$${totals.revenue.toFixed(2)}</div></div>
           <div class="stat-card"><div class="label">Accounts Activated</div><div class="value" style="color:var(--success)">${totals.accounts_activated.toLocaleString()}</div></div>
           <div class="stat-card"><div class="label">Conversion Rate</div><div class="value">${convRate}</div></div>
           <div class="stat-card"><div class="label">Coupons Used</div><div class="value">${totals.coupons_applied.toLocaleString()}</div></div>
@@ -849,9 +866,9 @@
                 <div class="funnel-label">Signups</div>
               </div>
               <div class="funnel-step">
-                <div class="funnel-value">${totals.offers_completed.toLocaleString()}</div>
-                <div class="funnel-bar" style="height:${barH(totals.offers_completed, totals.total_views)}px;background:var(--purple)"></div>
-                <div class="funnel-label">Offers Done</div>
+                <div class="funnel-value">${totals.offers_clicked.toLocaleString()}</div>
+                <div class="funnel-bar" style="height:${barH(totals.offers_clicked, totals.total_views)}px;background:var(--purple)"></div>
+                <div class="funnel-label">Offers Clicked</div>
               </div>
               <div class="funnel-step">
                 <div class="funnel-value" style="color:var(--success)">${totals.accounts_activated.toLocaleString()}</div>
@@ -887,7 +904,7 @@
         const d = doc.data();
         const views = d.total_views || 0;
         const signups = d.signup_clicks || 0;
-        const offers = d.offers_completed || 0;
+        const offers = d.offers_clicked || 0;
         const activated = d.accounts_activated || 0;
         const rate = views > 0 ? ((activated / views) * 100).toFixed(1) + '%' : '—';
         const convCount = d.conversions || 0;
@@ -957,7 +974,7 @@
           <div style="overflow-x:auto">
           <table class="data-table">
             <thead>
-              <tr><th>Date</th><th>Views</th><th>Signups</th><th>Coupons</th><th>Offers</th><th>Activated</th><th>Rate</th><th>Conv.</th><th>Revenue</th><th>CB</th></tr>
+              <tr><th>Date</th><th>Views</th><th>Signups</th><th>Coupons</th><th>Clicked</th><th>Activated</th><th>Rate</th><th>Leads</th><th>Revenue</th><th>CB</th></tr>
             </thead>
             <tbody>${rows || '<tr><td colspan="10" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
           </table>

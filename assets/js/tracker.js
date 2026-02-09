@@ -81,10 +81,12 @@
     // Expose global tracker
     window.VS7Tracker = {
       track: trackEvent,
+      trackEvent: trackEvent,
       trackSignupClick: trackSignupClick,
       trackCouponApplied: trackCouponApplied,
       trackOfferStarted: trackOfferStarted,
-      trackOfferCompleted: trackOfferCompleted,
+      trackOfferClicked: trackOfferClicked,
+      trackOfferCompleted: trackOfferClicked, // backward compat — "completed" = click, real leads come via postback
       trackAccountActivated: trackAccountActivated,
       trackProcessingStarted: trackProcessingStarted,
       trackExitIntent: trackExitIntent
@@ -286,13 +288,13 @@
     incrementDaily('offers_started');
   }
 
-  // Offer completed (user clicked through an offer)
-  function trackOfferCompleted(offerIndex, offerName) {
-    trackEvent('offer_completed', {
+  // Offer clicked (user clicked through an offer button)
+  function trackOfferClicked(offerIndex, offerName) {
+    trackEvent('offer_clicked', {
       offerIndex: offerIndex || 0,
       offerName: offerName || 'unknown'
     });
-    incrementDaily('offers_completed');
+    incrementDaily('offers_clicked');
   }
 
   // Account activated (lead detected)
