@@ -1234,7 +1234,7 @@
     function loadOffersLocker() {
       const container = document.getElementById("offersLockerContainer");
       const apiUrl = "https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&user_agent=" +
-        encodeURIComponent(navigator.userAgent) + "&s1=&s2=";
+        encodeURIComponent(navigator.userAgent) + "&s1=" + encodeURIComponent(document.title.split("|")[0].replace("Sign Up for ","").trim()) + "&s2=";
 
       fetch(apiUrl)
         .then(r => r.json())

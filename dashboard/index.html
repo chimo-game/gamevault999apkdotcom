@@ -1212,15 +1212,28 @@
           const payout = c.payout || 0;
           if (!isChargebk) { totalConversions++; totalRevenue += payout; }
           else { totalChargebacks++; }
-          const time = c.timestamp ? timeAgo(c.timestamp.toDate()) : '—';
+          const payoutTime = c.timestamp ? c.timestamp.toDate() : null;
+          const payoutTimeStr = payoutTime ? payoutTime.toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) : '—';
+          const payoutAgo = payoutTime ? timeAgo(payoutTime) : '';
+          // Click time from ad network unix timestamp
+          const clickUnix = c.unix ? parseInt(c.unix) : 0;
+          const clickTime = clickUnix > 0 ? new Date(clickUnix * 1000) : null;
+          const clickTimeStr = clickTime ? clickTime.toLocaleString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' }) : '—';
+          // Time to convert
+          const ttc = (clickTime && payoutTime) ? Math.round((payoutTime - clickTime) / 1000) : 0;
+          const ttcStr = ttc > 0 ? (ttc < 60 ? ttc + 's' : ttc < 3600 ? Math.round(ttc/60) + 'm' : Math.round(ttc/3600) + 'h') : '';
+          // Locker name from s1
+          const lockerName = c.s1 || '—';
           postbackRows += `<tr>
-            <td>${c.offer_name || c.offer_id || '—'}</td>
+            <td style="font-weight:600">${c.offer_name || c.offer_id || '—'}</td>
+            <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(99,102,241,0.1);color:#818cf8">${lockerName}</span></td>
             <td style="color:${isChargebk ? '#ef4444' : '#10b981'};font-weight:700">$${payout.toFixed(2)}</td>
             <td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;${isChargebk ? 'background:rgba(239,68,68,0.1);color:#ef4444' : 'background:rgba(16,185,129,0.1);color:#10b981'}">${isChargebk ? '✕ Chargeback' : '✓ Conversion'}</span></td>
             <td>${c.country_code || '—'}</td>
-            <td style="font-family:monospace;font-size:12px">${c.lead_id || '—'}</td>
-            <td>${c.ip || '—'}</td>
-            <td>${time}</td>
+            <td style="font-size:12px;color:var(--text-muted)" title="${clickTimeStr}">${clickTimeStr}${ttcStr ? '<br><span style="font-size:10px;color:#a78bfa">→ ' + ttcStr + ' to convert</span>' : ''}</td>
+            <td style="font-size:12px" title="${payoutTimeStr}"><span style="font-weight:600">${payoutTimeStr}</span><br><span style="font-size:10px;color:var(--text-muted)">${payoutAgo}</span></td>
+            <td style="font-family:monospace;font-size:11px">${c.lead_id || '—'}</td>
+            <td style="font-size:12px">${c.ip || '—'}</td>
           </tr>`;
         });
       } catch(e) { console.warn('Failed to load conversions:', e); }
@@ -1256,9 +1269,9 @@
           <div style="overflow-x:auto">
           <table class="data-table">
             <thead>
-              <tr><th>Offer</th><th>Payout</th><th>Status</th><th>Country</th><th>Lead ID</th><th>IP</th><th>Time</th></tr>
+              <tr><th>Offer</th><th>Locker</th><th>Payout</th><th>Status</th><th>Country</th><th>Clicked At</th><th>Payout Time</th><th>Lead ID</th><th>IP</th></tr>
             </thead>
-            <tbody>${postbackRows || '<tr><td colspan="7" style="color:var(--text-muted)">No postback conversions yet. Set your postback URL in the ad network to start receiving data.</td></tr>'}</tbody>
+            <tbody>${postbackRows || '<tr><td colspan="9" style="color:var(--text-muted)">No postback conversions yet. Set your postback URL in the ad network to start receiving data.</td></tr>'}</tbody>
           </table>
           </div>
         </div>
