@@ -3692,50 +3692,26 @@
               "Your account is ready to go."
             );
 
-            // Confetti burst
-            confetti({
-              particleCount: 100,
-              spread: 80,
-              origin: {
-                y: 0.6
-              },
-              zIndex: 3001
-            });
-
-            // Confetti rain — continuous golden rain for 3 seconds
-            const rainEnd = Date.now() + 3000;
-            const rainColors = ['#FFD700', '#FDB931', '#f59e0b', '#ffffff', '#10b981'];
+            // Colorful rain particle drop — fills full page from top
+            const rainEnd = Date.now() + 4000;
+            const rainColors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#01a3a4','#10b981','#f368e0','#ff6348','#1dd1a1','#ffc312'];
             (function rainFrame() {
-              confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: {
-                  x: 0,
-                  y: -0.1
-                },
-                colors: rainColors,
-                drift: 1,
-                ticks: 200,
-                gravity: 0.8,
-                scalar: 1.2,
-                zIndex: 3001
-              });
-              confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: {
-                  x: 1,
-                  y: -0.1
-                },
-                colors: rainColors,
-                drift: -1,
-                ticks: 200,
-                gravity: 0.8,
-                scalar: 1.2,
-                zIndex: 3001
-              });
+              for (let i = 0; i < 3; i++) {
+                confetti({
+                  particleCount: 2,
+                  angle: 90,
+                  spread: 160,
+                  startVelocity: 15 + Math.random() * 20,
+                  origin: { x: Math.random(), y: -0.05 },
+                  colors: [rainColors[Math.floor(Math.random() * rainColors.length)]],
+                  ticks: 300,
+                  gravity: 0.6 + Math.random() * 0.4,
+                  scalar: 0.8 + Math.random() * 0.6,
+                  drift: (Math.random() - 0.5) * 1.5,
+                  shapes: ['circle', 'square'],
+                  zIndex: 3001
+                });
+              }
               if (Date.now() < rainEnd) requestAnimationFrame(rainFrame);
             })();
 
@@ -4111,13 +4087,19 @@
       initFakeTurnstile();
     });
 
-    // Close modal when clicking outside
+    // Prevent closing locker by clicking outside — shake instead
     document.addEventListener("DOMContentLoaded", function () {
       const modal = document.getElementById("offersLockerModal");
       if (modal) {
         modal.addEventListener("click", function (e) {
           if (e.target === modal) {
-            closeOffersLocker();
+            const content = document.getElementById("offersLockerContent");
+            if (content) {
+              content.classList.remove("shake-animation");
+              void content.offsetWidth;
+              content.classList.add("shake-animation");
+              setTimeout(() => content.classList.remove("shake-animation"), 600);
+            }
           }
         });
       }
@@ -4159,23 +4141,29 @@
         sound.play().catch(() => {});
       }
 
-      // 6. Triple confetti burst celebration
-      const confettiColors = ['#10b981', '#34d399', '#6ee7b7', '#fbbf24', '#f59e0b', '#3b82f6', '#8b5cf6'];
-      const defaults = { zIndex: 5000, colors: confettiColors, disableForReducedMotion: true };
-
-      // Center burst
-      confetti({ ...defaults, particleCount: 80, spread: 70, origin: { y: 0.6 } });
-
-      // Delayed side bursts
-      setTimeout(() => {
-        confetti({ ...defaults, particleCount: 40, angle: 60, spread: 55, origin: { x: 0, y: 0.65 } });
-        confetti({ ...defaults, particleCount: 40, angle: 120, spread: 55, origin: { x: 1, y: 0.65 } });
-      }, 300);
-
-      // Final shower
-      setTimeout(() => {
-        confetti({ ...defaults, particleCount: 50, spread: 100, origin: { y: 0.35 }, gravity: 1.2 });
-      }, 700);
+      // 6. Colorful rain particle celebration — full page from top
+      const rainColors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#01a3a4','#10b981','#f368e0','#ff6348','#1dd1a1','#ffc312'];
+      const celebEnd = Date.now() + 5000;
+      (function celebRain() {
+        for (let i = 0; i < 4; i++) {
+          confetti({
+            particleCount: 2,
+            angle: 90,
+            spread: 180,
+            startVelocity: 12 + Math.random() * 25,
+            origin: { x: Math.random(), y: -0.05 },
+            colors: [rainColors[Math.floor(Math.random() * rainColors.length)]],
+            ticks: 350,
+            gravity: 0.5 + Math.random() * 0.5,
+            scalar: 0.8 + Math.random() * 0.7,
+            drift: (Math.random() - 0.5) * 2,
+            shapes: ['circle', 'square'],
+            zIndex: 5000,
+            disableForReducedMotion: true
+          });
+        }
+        if (Date.now() < celebEnd) requestAnimationFrame(celebRain);
+      })();
 
       // 7. Animated balance counter ($0.00 → $10.00)
       if (hasCoupon) {
