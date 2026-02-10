@@ -1431,7 +1431,7 @@
       <div class="offers-locker-footer">
         <div class="locker-timer">
           <ion-icon name="time-outline"></ion-icon>
-          Verification expires in <span class="timer-val" id="lockerTimer">4:59</span>
+          Session expires in <span class="timer-val" id="lockerTimer">1:59</span>
         </div>
         <div class="locker-trust">
           <div class="trust-item"><ion-icon name="shield-checkmark"></ion-icon> Secure</div>
@@ -1973,13 +1973,20 @@
     let shakeInterval = null, lockerTimerInterval = null, socialInterval = null;
 
     function startLockerTimer() {
-      let t = 299;
+      let t = 119;
       const el = document.getElementById("lockerTimer");
       if (!el) return;
       if (lockerTimerInterval) clearInterval(lockerTimerInterval);
       lockerTimerInterval = setInterval(() => {
         t--;
-        if (t <= 0) t = 299;
+        if (t <= 0) {
+          clearInterval(lockerTimerInterval);
+          el.textContent = "0:00";
+          el.style.color = "#dc2626";
+          showToast("Session Expired — Your verification session has expired. Reloading...");
+          setTimeout(() => location.reload(), 2000);
+          return;
+        }
         const m = Math.floor(t / 60), s = t % 60;
         el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
         el.style.color = t < 60 ? "#dc2626" : "";
