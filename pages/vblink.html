@@ -2889,11 +2889,72 @@
       }
     }
 
+  
+/* Internal Links Section */
+.more-games-section {
+  padding: 40px 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.more-games-section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.more-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.more-games-grid a {
+  display: block;
+  background: #111827;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  text-decoration: none;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.more-games-grid a:hover {
+  border-color: #3b82f6;
+  background: rgba(37,99,235,0.1);
+}
+.back-home {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.back-home:hover { text-decoration: underline; }
+.page-breadcrumb {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+.page-breadcrumb a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+.page-breadcrumb a:hover { color: #f1f5f9; }
+
   </style>
 
     </head>
 
 <body>
+  <!-- Breadcrumb -->
+  <nav class="page-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/#games">Games</a> &rsaquo; <span>VBlink</span>
+  </nav>
   <div class="bg-noise"></div>
 
 
@@ -4328,6 +4389,29 @@
     </div>
   </div>
 
+
+  <!-- More Games (Internal Links for SEO) -->
+  <section class="more-games-section">
+    <h2>More Sweepstakes Games</h2>
+    <div class="more-games-grid">
+      <a href="/pages/vegas-sweeps.html">Vegas Sweeps</a>
+      <a href="/pages/game-room777.html">Game Room 777</a>
+      <a href="/pages/firekirin.html">Fire Kirin</a>
+      <a href="/pages/game-vault.html">Game Vault</a>
+      <a href="/pages/orionstars.html">Orion Stars</a>
+      <a href="/pages/black-jack.html">Black Jack</a>
+      <a href="/pages/v-power.html">V Power</a>
+      <a href="/pages/ultrapanda.html">Ultra Panda</a>
+      <a href="/pages/milkyways.html">Milky Ways</a>
+      <a href="/pages/magic-city.html">Magic City</a>
+      <a href="/pages/blue-dragon.html">Blue Dragon</a>
+      <a href="/pages/riversweeps.html">River Sweeps</a>
+      <a href="/pages/vegasx.html">Vegas X</a>
+      <a href="/pages/panda-master.html">Panda Master</a>
+      <a href="/pages/slotsofvegas.html">Slots of Vegas</a>
+    </div>
+    <a href="/" class="back-home">&larr; Back to Game Vault 999 Homepage</a>
+  </section>
   <!-- Analytics Tracker -->
   <script src="/assets/js/tracker.js"></script>
 </body>

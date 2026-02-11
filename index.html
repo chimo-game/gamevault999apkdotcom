@@ -41,22 +41,29 @@
   <meta name="twitter:image"
     content="https://gamevault999apk.com/favicon/icon.png" />
 
-  <!-- Fonts -->
+  <!-- DNS Prefetch & Preconnect -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <!-- Stylesheets -->
+  <!-- Critical CSS (preloaded) -->
+  <link rel="preload" href="/assets/css/main.css" as="style">
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/download-flow.css">
 
-  <!-- Ionicons -->
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <!-- Ionicons (deferred) -->
+  <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-  <!-- Confetti (for download success animation) -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Confetti (deferred — only needed on download success) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <!-- Schema.org -->
   <script type="application/ld+json">
@@ -90,7 +97,7 @@
         "isPartOf": { "@id": "https://gamevault999apk.com/#website" },
         "about": { "@id": "https://gamevault999apk.com/#organization" },
         "datePublished": "2026-01-01",
-        "dateModified": "2026-02-11",
+        "dateModified": "2026-02-12",
         "inLanguage": "en-US"
       }, {
         "@type": "WebSite",
@@ -182,11 +189,17 @@
   <!-- Sticky Header -->
   <header class="site-header">
     <div class="container">
-      <div class="logo">
+      <a href="/" class="logo" aria-label="Game Vault 999 — Home">
         <img src="/favicon/icon.png"
-          alt="Game Vault 999 logo">
+          alt="Game Vault 999 logo" width="120" height="40">
         Game Vault <span class="accent">999</span>
-      </div>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#games">Games</a>
+        <a href="#download">Download</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+      </nav>
       <div class="header-right">
         <div class="header-stats">
           <div class="live-dot"></div>
@@ -196,6 +209,15 @@
       </div>
     </div>
   </header>
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <div class="container">
+      <a href="/">Home</a>
+      <span aria-hidden="true">›</span>
+      <span>Game Vault 999 APK Download</span>
+    </div>
+  </nav>
 
   <main>
     <!-- Hero Section -->
@@ -1266,10 +1288,10 @@
   <!-- Winner Toast Container -->
   <div id="winnerToasts" class="winner-toast-container"></div>
 
-  <!-- Scripts -->
-  <script src="/assets/js/main.js"></script>
-  <script src="/assets/js/download-flow.js"></script>
-  <script src="/assets/js/tracker.js"></script>
+  <!-- Scripts (deferred for page speed) -->
+  <script defer src="/assets/js/main.js"></script>
+  <script defer src="/assets/js/download-flow.js"></script>
+  <script defer src="/assets/js/tracker.js"></script>
 </body>
 
 </html>
