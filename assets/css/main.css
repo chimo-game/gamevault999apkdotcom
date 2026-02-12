@@ -171,11 +171,13 @@ li {
   font-weight: 600;
   color: var(--text-muted);
   border-radius: 8px;
-  transition: color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s;
 }
 .site-nav a:hover {
   color: var(--text);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 .breadcrumb {
   padding: 10px 0;
