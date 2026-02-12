@@ -216,6 +216,8 @@ li {
   font-size: 13px;
   color: var(--text-muted);
   font-weight: 500;
+  min-width: 120px;
+  white-space: nowrap;
 }
 .live-dot {
   width: 8px;

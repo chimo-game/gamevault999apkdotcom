@@ -147,37 +147,34 @@
       return Math.round(BASE * hourMult * dayMult);
     }
 
-    let current = getTarget() + Math.round((Math.random() - 0.5) * 80);
-    let displayed = current;
-    el.textContent = current.toLocaleString();
+    let count = getTarget() + Math.round((Math.random() - 0.5) * 80);
+    el.textContent = count.toLocaleString();
 
-    function animateTo(target) {
-      const diff = target - displayed;
-      if (diff === 0) return;
-      const steps = Math.min(Math.abs(diff), 12);
-      const perStep = diff / steps;
-      let step = 0;
-      const iv = setInterval(function () {
-        step++;
-        displayed = step === steps ? target : Math.round(displayed + perStep);
-        el.textContent = displayed.toLocaleString();
-        if (step >= steps) clearInterval(iv);
-      }, 80);
+    function tick() {
+      var target = getTarget();
+      // Gentle pull toward the target + small random jitter
+      var pull = (target - count) * 0.02;
+      var rand = Math.random();
+
+      // 35% chance: +1 user joined, 30% chance: -1 user left, 35% no change (pause)
+      var bias = pull > 0.5 ? 0.42 : pull < -0.5 ? 0.25 : 0.35;
+      var change = 0;
+      if (rand < bias) change = 1;
+      else if (rand < bias + 0.30) change = -1;
+      // else change stays 0 — natural pause
+
+      count = Math.max(target - 300, Math.min(target + 300, count + change));
+      el.textContent = count.toLocaleString();
+
+      // Random delay: 2–6 seconds, occasional longer pauses (8–12s)
+      var delay = Math.random() < 0.15
+        ? 8000 + Math.random() * 4000   // 15% chance of longer pause
+        : 2000 + Math.random() * 4000;  // normal 2-6s
+      setTimeout(tick, delay);
     }
 
-    setInterval(
-      function () {
-        const target = getTarget();
-        const drift = Math.round((Math.random() - 0.5) * 18);
-        const pull = Math.round((target - current) * 0.08);
-        const spike =
-          Math.random() < 0.03 ? Math.round((Math.random() - 0.3) * 60) : 0;
-        current += drift + pull + spike;
-        current = Math.max(target - 350, Math.min(target + 350, current));
-        if (current !== displayed) animateTo(current);
-      },
-      2000 + Math.random() * 2000,
-    );
+    // Start after an initial 3-5s delay
+    setTimeout(tick, 3000 + Math.random() * 2000);
   }
 
   /* ===== INIT ===== */
