@@ -193,12 +193,24 @@
           alt="Game Vault 999 logo" width="120" height="40">
         Game Vault <span class="accent">999</span>
       </a>
-      <nav class="site-nav" aria-label="Main navigation">
+      <nav class="site-nav" id="siteNav" aria-label="Main navigation">
         <a href="#games">Games</a>
         <a href="#download">Download</a>
         <a href="/blog/">Blog</a>
         <a href="#about">About</a>
         <a href="#faq">FAQ</a>
+        <div class="mobile-nav-extras">
+          <a href="/funds/deposit.html" class="mnav-funds mnav-dep">
+            <ion-icon name="wallet"></ion-icon> Deposit
+          </a>
+          <a href="/funds/withdraw.html" class="mnav-funds mnav-wdw">
+            <ion-icon name="cash"></ion-icon> Withdraw
+          </a>
+          <div class="mnav-stats">
+            <div class="live-dot"></div>
+            <strong id="mobileOnline">2,847</strong> online now
+          </div>
+        </div>
       </nav>
       <div class="header-right">
         <div class="header-stats">
@@ -206,9 +218,13 @@
           <strong id="onlineCount">2,847</strong>
           <span>online now</span>
         </div>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
+  <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- Breadcrumb -->
   <nav class="breadcrumb" aria-label="Breadcrumb">
