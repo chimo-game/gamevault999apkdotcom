@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# macOS resource forks
+__MACOSX/
+
+# Editor
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Build scripts (run once)
+generate_pages.py
+generate_new_pages.py
+optimize_pages.py
+
+# Misc
+*.log
