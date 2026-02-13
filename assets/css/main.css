@@ -241,7 +241,7 @@ li {
 /* ====== 6. HERO ====== */
 .hero {
   text-align: center;
-  padding: 56px 0 36px;
+  padding: 40px 0 24px;
 }
 .hero-badge {
   display: inline-flex;
@@ -250,18 +250,18 @@ li {
   background: rgba(37, 99, 235, 0.12);
   border: 1px solid rgba(37, 99, 235, 0.25);
   color: var(--primary-light);
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 100px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 .hero h1 {
-  font-size: clamp(30px, 5vw, 50px);
+  font-size: clamp(28px, 4.5vw, 44px);
   font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -1.5px;
-  margin-bottom: 16px;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  margin-bottom: 10px;
 }
 .hero .gradient {
   background: linear-gradient(135deg, var(--gold), #fb923c);
@@ -270,51 +270,32 @@ li {
   background-clip: text;
 }
 .hero p {
-  font-size: 17px;
+  font-size: 15px;
   color: var(--text-muted);
-  max-width: 540px;
-  margin: 0 auto 36px;
-  line-height: 1.65;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  line-height: 1.55;
 }
 
-/* ====== 7. TRUST STRIP ====== */
-.trust-strip {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px 32px;
-  margin-bottom: 40px;
-}
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.trust-item ion-icon {
-  font-size: 18px;
-  color: var(--success);
-}
+/* ====== 7. (trust strip removed) ====== */
 
 /* ====== 8. PAYMENT BADGES ====== */
 .payment-strip {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 40px;
+  gap: 6px;
+  margin-bottom: 24px;
 }
 .pay-badge {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 16px;
+  border-radius: 8px;
+  padding: 5px 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text);
   transition: all 0.2s ease;
@@ -324,79 +305,56 @@ li {
   transform: translateY(-1px);
 }
 .pay-badge img {
-  height: 20px;
+  height: 16px;
   width: auto;
 }
 
-/* ====== 9. QUICK LINKS ====== */
-.quick-links {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 40px;
-}
-.ql {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 22px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.ql ion-icon {
-  font-size: 18px;
-}
-.ql.dep {
-  background: linear-gradient(135deg, var(--success), #059669);
-  color: white;
-}
-.ql.dep:hover {
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-  transform: translateY(-1px);
-}
-.ql.wdw {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-.ql.wdw:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-  transform: translateY(-1px);
-}
+/* ====== 9. (quick links removed) ====== */
 
-/* ====== 10. SOCIAL PROOF ====== */
-.social-banner {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
+/* ====== 10. SOCIAL PROOF (inline) ====== */
+.social-inline {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 20px 32px;
-  margin-bottom: 48px;
-}
-.social-stat {
-  text-align: center;
-}
-.social-stat .num {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--gold);
-}
-.social-stat .label {
+  gap: 6px 16px;
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-bottom: 28px;
 }
-.social-divider {
-  width: 1px;
-  height: 36px;
-  background: var(--border);
+.social-inline strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+.si-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.4;
+}
+.si-link {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.si-dep {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+}
+.si-dep:hover {
+  background: rgba(16, 185, 129, 0.22);
+}
+.si-wdw {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.si-wdw:hover {
+  border-color: rgba(255,255,255,0.16);
+  color: var(--text);
 }
 
 /* ====== 11. SECTION HEAD ====== */
@@ -416,7 +374,7 @@ li {
 
 /* ====== 12. GAMES GRID (Sign-up Cards) ====== */
 .games-section {
-  padding-bottom: 60px;
+  padding-bottom: 40px;
 }
 
 .games-grid {
@@ -433,6 +391,8 @@ li {
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  text-decoration: none;
+  color: inherit;
 }
 .game-card:hover {
   border-color: rgba(255, 255, 255, 0.15);
@@ -516,12 +476,11 @@ li {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 11px;
+  padding: 10px 16px;
   background: linear-gradient(135deg, var(--primary), #1d4ed8);
   color: white;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   transition: all 0.2s ease;
   border: none;
@@ -547,10 +506,42 @@ li {
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
 }
 
-/* ====== 13. DOWNLOAD SECTION (Download Cards) ====== */
+/* Show All Games Toggle */
+.games-grid-extra[style*="contents"] {
+  display: contents !important;
+}
+.btn-show-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-show-all:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  background: var(--surface-2);
+}
+.btn-show-all ion-icon {
+  font-size: 16px;
+}
+.show-all-wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ====== 13. DOWNLOAD SECTION (App Listing Style) ====== */
 .download-section {
   position: relative;
-  padding: 72px 0 64px;
+  padding: 56px 0 48px;
   overflow: hidden;
 }
 .download-section::before {
@@ -560,20 +551,20 @@ li {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(16, 185, 129, 0.05) 40%,
+    rgba(16, 185, 129, 0.04) 40%,
     rgba(16, 185, 129, 0.02) 100%
   );
   pointer-events: none;
 }
 .dl-head {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 .dl-head h2 {
   font-size: clamp(22px, 4vw, 32px);
   font-weight: 800;
   letter-spacing: -0.5px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .dl-head .gradient {
   background: linear-gradient(135deg, var(--success), var(--success-light));
@@ -584,169 +575,105 @@ li {
 .dl-head p {
   font-size: 15px;
   color: var(--text-muted);
-  max-width: 480px;
+  max-width: 420px;
   margin: 0 auto;
 }
-.dl-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-.dl-game-card {
-  background: var(--surface);
+
+/* App listing rows */
+.al-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+}
+.al-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--surface);
   text-decoration: none;
   color: inherit;
-  display: flex;
-  flex-direction: column;
+  transition: background 0.15s ease;
 }
-.dl-game-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.3);
+.al-row:hover {
+  background: var(--surface-2);
 }
-.dl-game-card .gc-banner {
-  position: relative;
-  height: 160px;
-  overflow: hidden;
-}
-.dl-game-card .gc-banner img {
-  width: 100%;
-  height: 100%;
+.al-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
 }
-.dl-game-card:hover .gc-banner img {
-  transform: scale(1.06);
+.al-info {
+  flex: 1;
+  min-width: 0;
 }
-.dl-game-card .gc-banner .dl-platform {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.al-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.al-meta {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
 }
-.dl-platform-tag {
+.al-meta span {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  backdrop-filter: blur(8px);
 }
-.dl-platform-tag.android {
-  background: rgba(16, 185, 129, 0.85);
-  color: #fff;
-}
-.dl-platform-tag.ios {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.dl-platform-tag ion-icon {
+.al-meta ion-icon {
   font-size: 12px;
+  color: #facc15;
 }
-.dl-game-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
+.al-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.5;
 }
-.dl-game-body .gc-name {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
-}
-.dl-game-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.dl-game-info span {
+.al-install {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-}
-.dl-game-info ion-icon {
-  font-size: 14px;
-  color: var(--success);
-}
-.dl-download-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 10px;
+  gap: 5px;
+  padding: 7px 16px;
   background: linear-gradient(135deg, #10b981, #059669);
   color: #fff;
-  font-size: 13px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 700;
-  font-family: inherit;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  text-decoration: none;
-  margin-top: auto;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
-.dl-download-btn ion-icon {
-  font-size: 18px;
+.al-install ion-icon {
+  font-size: 14px;
 }
-.dl-download-btn:hover {
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-  transform: translateY(-1px);
+.al-row:hover .al-install {
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
 }
-.dl-game-card.featured {
-  border-color: rgba(16, 185, 129, 0.3);
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+.al-row.featured {
+  background: rgba(16, 185, 129, 0.04);
 }
-.dl-game-card.featured .gc-banner::after {
-  content: "⭐ Most Popular";
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: var(--gold);
-  color: #000;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 6px;
-  letter-spacing: 0.3px;
-}
-.dl-stats-bar {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 24px 36px;
-  margin-top: 40px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.dl-stat {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.dl-stat ion-icon {
-  font-size: 16px;
-  color: var(--success);
-}
-.dl-stat strong {
-  color: var(--text);
+.al-row.featured .al-name::after {
+  content: "★";
+  margin-left: 6px;
+  color: var(--gold);
+  font-size: 12px;
 }
 
 /* ====== 14. FOOTER ====== */
@@ -870,18 +797,18 @@ li {
 .hero-cta {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .btn-hero-primary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
+  gap: 7px;
+  padding: 12px 26px;
   background: linear-gradient(135deg, var(--success), #059669);
   color: white;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 700;
   font-family: inherit;
   border: none;
@@ -894,18 +821,18 @@ li {
   box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
 }
 .btn-hero-primary ion-icon {
-  font-size: 20px;
+  font-size: 18px;
 }
 .btn-hero-secondary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
+  gap: 7px;
+  padding: 12px 22px;
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
@@ -916,7 +843,7 @@ li {
   transform: translateY(-2px);
 }
 .btn-hero-secondary ion-icon {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 /* ====== 17. URGENCY COUNTDOWN ====== */
@@ -924,15 +851,15 @@ li {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
-  font-size: 13px;
+  margin-bottom: 18px;
+  font-size: 12px;
   color: var(--text-muted);
   font-weight: 500;
 }
 .hero-urgency ion-icon {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--gold);
 }
 .hero-urgency strong {
@@ -1280,72 +1207,42 @@ li {
     height: 30px;
   }
   .hero {
-    padding: 32px 0 24px;
+    padding: 24px 0 16px;
   }
   .hero h1 {
-    font-size: 26px;
-    letter-spacing: -0.8px;
+    font-size: 24px;
+    letter-spacing: -0.7px;
   }
   .hero h1 br {
     display: none;
   }
   .hero p {
-    font-size: 14px;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+    line-height: 1.5;
   }
   .hero-badge {
-    font-size: 12px;
-    padding: 5px 12px;
-    margin-bottom: 14px;
-  }
-  .trust-strip {
-    gap: 10px 16px;
-    margin-bottom: 28px;
-  }
-  .trust-item {
-    font-size: 12px;
-    gap: 5px;
-  }
-  .trust-item ion-icon {
-    font-size: 15px;
+    font-size: 11px;
+    padding: 4px 10px;
+    margin-bottom: 10px;
   }
   .payment-strip {
-    gap: 6px;
-    margin-bottom: 28px;
+    gap: 5px;
+    margin-bottom: 12px;
   }
   .pay-badge {
-    padding: 6px 10px;
-    font-size: 12px;
-    gap: 5px;
+    padding: 4px 8px;
+    font-size: 11px;
+    gap: 4px;
+    border-radius: 6px;
   }
   .pay-badge img {
-    height: 16px;
+    height: 14px;
   }
-  .quick-links {
-    gap: 8px;
-    margin-bottom: 28px;
-  }
-  .ql {
-    padding: 10px 18px;
-    font-size: 13px;
-    flex: 1;
-    justify-content: center;
-  }
-  .social-banner {
-    gap: 12px 16px;
-    padding: 14px;
-    border-radius: 12px;
-    margin-bottom: 36px;
-  }
-  .social-divider {
-    display: none;
-  }
-  .social-stat .num {
-    font-size: 20px;
-  }
-  .social-stat .label {
+  .social-inline {
+    gap: 4px 12px;
     font-size: 11px;
+    margin-bottom: 20px;
   }
   .games-grid {
     grid-template-columns: 1fr 1fr;
@@ -1365,10 +1262,38 @@ li {
     gap: 8px;
   }
   .gc-cta {
-    padding: 9px;
-    font-size: 12px;
+    padding: 8px;
+    font-size: 11.5px;
   }
   .gc-bonus {
+    font-size: 11px;
+  }
+  .download-section {
+    padding: 36px 0 32px;
+  }
+  .dl-head h2 {
+    font-size: 20px;
+  }
+  .dl-head p {
+    font-size: 13px;
+  }
+  .al-row {
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .al-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  .al-name {
+    font-size: 13px;
+  }
+  .al-meta {
+    font-size: 10.5px;
+  }
+  .al-install {
+    padding: 6px 12px;
     font-size: 11px;
   }
   .section-head h2 {
@@ -1377,61 +1302,21 @@ li {
   .section-head p {
     font-size: 13px;
   }
-  .dl-head h2 {
-    font-size: 20px;
-  }
-  .dl-head p {
-    font-size: 13px;
-  }
-  .dl-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .dl-game-card .gc-banner {
-    height: 110px;
-  }
-  .dl-game-body {
-    padding: 12px;
-    gap: 8px;
-  }
-  .dl-game-body .gc-name {
-    font-size: 14px;
-  }
-  .dl-game-info {
-    font-size: 11px;
-    gap: 8px;
-  }
-  .dl-download-btn {
-    padding: 9px 12px;
-    font-size: 12px;
-    gap: 5px;
-  }
-  .dl-download-btn ion-icon {
-    font-size: 15px;
-  }
-  .dl-stats-bar {
-    gap: 16px 20px;
-    margin-top: 28px;
-    padding-top: 20px;
-  }
-  .dl-stat {
-    font-size: 12px;
-  }
   .header-stats span {
     display: none;
   }
   .btn-hero-primary {
-    padding: 12px 24px;
-    font-size: 15px;
+    padding: 11px 20px;
+    font-size: 14px;
   }
   .btn-hero-secondary {
-    padding: 12px 20px;
-    font-size: 15px;
+    padding: 11px 18px;
+    font-size: 14px;
   }
   .hero-urgency {
-    font-size: 12px;
-    gap: 6px;
-    margin-bottom: 18px;
+    font-size: 11px;
+    gap: 5px;
+    margin-bottom: 14px;
   }
   .floating-cta {
     display: block;
@@ -1519,11 +1404,11 @@ li {
     padding: 0 14px;
   }
   .hero h1 {
-    font-size: 22px;
-    letter-spacing: -0.5px;
+    font-size: 20px;
+    letter-spacing: -0.4px;
   }
   .hero p {
-    font-size: 13px;
+    font-size: 12.5px;
   }
   .hero-cta {
     flex-direction: column;
@@ -1532,41 +1417,22 @@ li {
   .btn-hero-secondary {
     width: 100%;
     justify-content: center;
-    padding: 13px 20px;
-    font-size: 14px;
-  }
-  .trust-strip {
-    gap: 8px 14px;
-  }
-  .trust-item {
-    font-size: 11px;
+    padding: 11px 18px;
+    font-size: 13px;
   }
   .pay-badge span {
     display: none;
   }
   .pay-badge {
-    padding: 8px 10px;
+    padding: 4px 8px;
   }
-  .social-stat .num {
-    font-size: 18px;
+  .social-inline {
+    font-size: 10.5px;
+    gap: 3px 10px;
   }
-  .dl-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .dl-game-card .gc-banner {
-    height: 140px;
-  }
-  .dl-game-body {
-    padding: 14px;
-    gap: 10px;
-  }
-  .dl-game-body .gc-name {
-    font-size: 15px;
-  }
-  .dl-download-btn {
-    padding: 11px 16px;
-    font-size: 13px;
+  .si-dot {
+    width: 2px;
+    height: 2px;
   }
 }
 
@@ -1579,7 +1445,7 @@ li {
     height: 26px;
   }
   .hero h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
   .games-grid {
     gap: 8px;
@@ -1594,19 +1460,36 @@ li {
     font-size: 10px;
   }
   .gc-cta {
-    padding: 8px;
-    font-size: 11px;
+    padding: 7px;
+    font-size: 10.5px;
     gap: 4px;
   }
   .gc-cta ion-icon {
-    font-size: 14px;
+    font-size: 13px;
   }
   .gc-banner {
     height: 100px;
   }
-  .ql {
-    padding: 9px 14px;
+  .al-row {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .al-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+  .al-name {
     font-size: 12px;
+  }
+  .al-meta {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .al-install {
+    padding: 5px 10px;
+    font-size: 10px;
+    gap: 3px;
   }
   .top-banner {
     font-size: 11px;

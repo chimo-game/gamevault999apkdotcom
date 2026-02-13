@@ -1,100 +1,58 @@
-/* ================================================================
-   DOWNLOAD FLOW — Exact replica of sign-up processing, Cloudflare
-   verification & offers locker styles from game pages.
-   All classes prefixed with dl- to avoid collisions.
-   ================================================================ */
+/* ═══════════════════════════════════════════════
+   DOWNLOAD FLOW — Processing + Turnstile + Locker
+   ═══════════════════════════════════════════════ */
 
-/* ====== OVERLAY (Processing) ====== */
-.dl-modal-overlay {
+/* ── Shared Overlay ── */
+.df-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  z-index: 9000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
-  padding: 20px;
+    opacity 0.3s,
+    visibility 0.3s;
+  padding: 16px;
 }
-.dl-modal-overlay.active {
+.df-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
-/* ====== PROCESS CARD (Download Manager App Style) ====== */
-.dl-process-card {
-  width: min(420px, 100%);
+/* ═══════════════════════════════
+   STAGE 1 — Download Processing
+   ═══════════════════════════════ */
+.df-card {
+  width: 100%;
+  max-width: 420px;
   background: #fff;
-  border-radius: 24px;
-  padding: 0;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-  transform: translateY(20px) scale(0.95);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 32px 28px;
   text-align: center;
-  overflow: hidden;
+  transform: scale(0.88) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Outfit", system-ui, sans-serif;
+  color: #0f172a;
 }
-.dl-modal-overlay.active .dl-process-card {
-  transform: translateY(0) scale(1);
-}
-
-/* ---- App Hero Section ---- */
-.dl-app-hero {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  padding: 32px 28px 24px;
-  position: relative;
-  overflow: hidden;
-}
-.dl-app-hero::before {
-  content: "";
-  position: absolute;
-  top: -40%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(
-    circle,
-    rgba(37, 99, 235, 0.15) 0%,
-    transparent 70%
-  );
-  border-radius: 50%;
-}
-.dl-app-hero::after {
-  content: "";
-  position: absolute;
-  bottom: -30%;
-  left: -15%;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(
-    circle,
-    rgba(16, 185, 129, 0.12) 0%,
-    transparent 70%
-  );
-  border-radius: 50%;
+.df-overlay.active .df-card {
+  transform: scale(1) translateY(0);
 }
 
-.dl-app-icon-wrap {
+/* File icon pulse */
+.df-file-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
   position: relative;
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 16px;
-  z-index: 1;
 }
-.dl-app-icon-wrap img {
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  object-fit: cover;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-}
-.dl-app-icon-wrap .dl-apk-icon {
+.df-file-icon-inner {
   width: 72px;
   height: 72px;
   border-radius: 18px;
@@ -102,140 +60,86 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: dfIconPulse 2s ease-in-out infinite;
 }
-.dl-app-icon-wrap .dl-apk-icon ion-icon {
+.df-file-icon-inner ion-icon {
   font-size: 34px;
   color: #fff;
 }
-
-/* Download pulse ring around icon */
-.dl-icon-pulse {
-  position: absolute;
-  inset: -6px;
-  border-radius: 22px;
-  border: 2px solid rgba(37, 99, 235, 0.4);
-  animation: dlIconPulse 2s ease-in-out infinite;
-}
-@keyframes dlIconPulse {
+@keyframes dfIconPulse {
   0%,
   100% {
     transform: scale(1);
-    opacity: 0.6;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
   }
   50% {
-    transform: scale(1.08);
-    opacity: 0;
+    transform: scale(1.04);
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
   }
 }
 
-.dl-app-name {
-  font-size: 18px;
+.df-title {
+  font-size: 20px;
   font-weight: 700;
-  color: #fff;
-  margin: 0 0 4px;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 2px;
 }
-.dl-app-meta {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  display: flex;
+.df-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* File info pill */
+.df-file-info {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  position: relative;
-  z-index: 1;
+  padding: 6px 14px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 20px;
 }
-.dl-app-meta .dl-meta-dot {
+.df-file-info .dot {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* ---- Download Body ---- */
-.dl-download-body {
-  padding: 24px 28px 28px;
-}
-
-/* Status text */
-.dl-status-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.dl-status-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.dl-status-text .dl-status-spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid #e2e8f0;
-  border-top-color: #2563eb;
-  border-radius: 50%;
-  animation: dlSpin 0.8s linear infinite;
-  flex-shrink: 0;
-}
-.dl-status-text.done .dl-status-spinner {
-  display: none;
-}
-.dl-status-text.done::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  background: #10b981;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
-  background-size: 10px;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.dl-percent {
-  font-size: 14px;
-  font-weight: 800;
-  color: #2563eb;
-  font-variant-numeric: tabular-nums;
+  background: #94a3b8;
 }
 
 /* Progress bar */
-.dl-progress-track {
-  width: 100%;
+.df-progress-wrap {
+  margin-bottom: 12px;
+}
+.df-progress-track {
   height: 8px;
-  background: #f1f5f9;
-  border-radius: 999px;
+  background: #e2e8f0;
+  border-radius: 99px;
   overflow: hidden;
-  margin-bottom: 8px;
   position: relative;
 }
-.dl-progress-fill {
+.df-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #2563eb, #3b82f6);
-  border-radius: 999px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 99px;
+  transition: width 0.4s ease;
   position: relative;
 }
-.dl-progress-fill::after {
+.df-progress-fill::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
   );
-  animation: dlShimmer 1.5s ease-in-out infinite;
+  animation: dfShimmer 1.5s infinite;
 }
-@keyframes dlShimmer {
+@keyframes dfShimmer {
   0% {
     transform: translateX(-100%);
   }
@@ -243,74 +147,39 @@
     transform: translateX(100%);
   }
 }
-.dl-progress-fill.complete {
-  background: linear-gradient(90deg, #10b981, #34d399);
-}
-.dl-progress-fill.complete::after {
-  display: none;
-}
-
-/* Download speed stats */
-.dl-stats-row {
+.df-progress-text {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-size: 11px;
-  color: #94a3b8;
-  margin-bottom: 20px;
-  font-variant-numeric: tabular-nums;
-}
-.dl-stats-row .dl-speed {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.dl-stats-row .dl-speed ion-icon {
   font-size: 12px;
-  color: #2563eb;
+  color: #64748b;
+  margin-top: 6px;
 }
-.dl-stats-row .dl-downloaded {
-  font-weight: 500;
+.df-progress-pct {
+  font-weight: 600;
+  color: #10b981;
 }
 
-/* ---- Status Log ---- */
-.dl-status-log {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+/* Steps */
+.df-steps {
   text-align: left;
-  border: 1px solid #f1f5f9;
-  border-radius: 12px;
-  overflow: hidden;
+  margin: 18px 0 16px;
 }
-.dl-log-item {
+.df-step {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 8px 0;
+  font-size: 13.5px;
   color: #94a3b8;
-  background: #fafbfc;
-  border-bottom: 1px solid #f1f5f9;
-  transition: all 0.3s ease;
-  opacity: 0.4;
+  transition: color 0.3s;
 }
-.dl-log-item:last-child {
-  border-bottom: none;
-}
-.dl-log-item.active {
-  opacity: 1;
+.df-step.active {
   color: #0f172a;
-  background: #eff6ff;
 }
-.dl-log-item.done {
-  opacity: 1;
-  color: #065f46;
-  background: #f0fdf4;
+.df-step.done {
+  color: #10b981;
 }
-
-.dl-log-icon {
+.df-step-badge {
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -318,784 +187,363 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: #f1f5f9;
-  transition: all 0.3s ease;
+  background: #e2e8f0;
+  transition: background 0.3s;
 }
-.dl-log-item.active .dl-log-icon {
-  background: #dbeafe;
+.df-step.active .df-step-badge {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
-.dl-log-item.active .dl-log-icon .dl-log-spinner {
-  display: block;
-}
-.dl-log-item.done .dl-log-icon {
-  background: #10b981;
-}
-.dl-log-icon ion-icon {
-  font-size: 12px;
-  color: #cbd5e1;
-}
-.dl-log-item.active .dl-log-icon ion-icon {
-  display: none;
-}
-.dl-log-item.done .dl-log-icon ion-icon {
-  color: #fff;
-}
-
-.dl-log-spinner {
-  display: none;
-  width: 12px;
-  height: 12px;
-  border: 2px solid #bfdbfe;
-  border-top-color: #2563eb;
+.df-step.active .df-step-badge::after {
+  content: "";
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  animation: dlSpin 0.8s linear infinite;
+  background: #fff;
+  animation: dfDotPulse 1s ease-in-out infinite;
 }
-
-.dl-log-text {
+@keyframes dfDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.df-step.done .df-step-badge {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+.df-step.done .df-step-badge::after {
+  content: "✓";
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.df-step-text {
   flex: 1;
-  line-height: 1.3;
-}
-.dl-log-time {
-  font-size: 10px;
-  color: #cbd5e1;
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
-}
-.dl-log-item.done .dl-log-time {
-  color: #86efac;
-}
-.dl-log-item.active .dl-log-time {
-  color: #93c5fd;
 }
 
-/* ---- Security Footer ---- */
-.dl-secure-footer {
+.df-secure {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
-}
-.dl-secure-tag {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
+  gap: 5px;
+  font-size: 11.5px;
   color: #94a3b8;
-  font-weight: 500;
+  margin-top: 4px;
 }
-.dl-secure-tag ion-icon {
+.df-secure ion-icon {
   font-size: 13px;
   color: #10b981;
 }
 
-@keyframes dlSpin {
+/* ═══════════════════════════════
+   STAGE 2 — Turnstile Verification
+   ═══════════════════════════════ */
+.df-verify-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  padding: 28px 24px;
+  text-align: center;
+  transform: scale(0.88) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Outfit", system-ui, sans-serif;
+  color: #0f172a;
+}
+.df-overlay.active .df-verify-card {
+  transform: scale(1) translateY(0);
+}
+.df-verify-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 16px;
+}
+.df-verify-icon ion-icon {
+  font-size: 30px;
+  color: #f59e0b;
+}
+.df-verify-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.df-verify-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* Fake turnstile widget */
+.df-turnstile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  margin-bottom: 18px;
+}
+.df-turnstile:hover {
+  border-color: #cbd5e1;
+}
+.df-turnstile.verified {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+.df-turnstile-check {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s;
+  position: relative;
+}
+.df-turnstile.verified .df-turnstile-check {
+  background: #10b981;
+  border-color: #10b981;
+}
+.df-turnstile-checkmark {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.25s;
+}
+.df-turnstile.verified .df-turnstile-checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+.df-turnstile-check .df-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: dfSpin 0.6s linear infinite;
+}
+.df-turnstile.verifying .df-turnstile-check {
+  border-color: #3b82f6;
+}
+.df-turnstile.verifying .df-turnstile-check .df-spinner {
+  display: block;
+}
+.df-turnstile.verifying .df-turnstile-checkmark {
+  display: none;
+}
+@keyframes dfSpin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* ================================================================
-   VERIFICATION MODAL — Cloudflare Turnstile Style (exact copy)
-   ================================================================ */
-.dl-verification-overlay {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2001;
-  opacity: 0;
-  visibility: hidden;
-  padding: 20px;
-}
-.dl-verification-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.dl-verification-modal {
-  background: #ffffff;
-  border-radius: 12px;
-  max-width: 390px;
-  width: 100%;
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.04);
-  animation: dlCfFadeIn 0.3s ease;
-  text-align: center;
-  overflow: hidden;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-    Cantarell, sans-serif;
-}
-
-@keyframes dlCfFadeIn {
-  from {
-    transform: scale(0.96) translateY(8px);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-}
-
-.dl-verification-header {
-  padding: 32px 32px 0;
-}
-.dl-verification-icon {
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.dl-verification-header h2 {
-  font-size: 20px;
-  color: #1a1a2e;
-  margin: 0 0 8px 0;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-}
-.dl-verification-header p {
-  font-size: 13px;
-  color: #6b7280;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.dl-verification-content {
-  padding: 24px 32px;
-}
-
-.dl-turnstile-container {
-  display: flex;
-  justify-content: center;
-}
-
-.dl-verification-buttons {
-  display: flex;
-  gap: 10px;
-  padding: 0 32px 24px;
-}
-
-.dl-verify-btn {
-  flex: 1;
-  background: #0051ba;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  font-family: inherit;
-}
-.dl-verify-btn:hover:not(:disabled) {
-  background: #003d8f;
-}
-.dl-verify-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.dl-verify-btn.cancel {
-  background: #f3f4f6;
-  color: #4b5563;
-  box-shadow: none;
-}
-.dl-verify-btn.cancel:hover {
-  background: #e5e7eb;
-}
-
-.dl-loading-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top: 2px solid white;
-  border-radius: 50%;
-  animation: dlSpin 0.8s linear infinite;
-}
-
-.dl-verification-footer {
-  padding: 14px 32px;
-  border-top: 1px solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  background: #fafafa;
-}
-.dl-verification-footer span {
-  font-size: 11px;
-  color: #9ca3af;
-}
-.dl-verification-footer .dl-cf-brand {
-  font-weight: 600;
-  color: #6b7280;
-}
-
-/* ====== Fake Turnstile Widget ====== */
-.dl-fake-turnstile {
-  background: #fafafa;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  user-select: none;
-  -webkit-user-select: none;
-  width: 100%;
-  max-width: 300px;
-}
-.dl-fake-turnstile:hover {
-  border-color: #b0b0b0;
-}
-.dl-fake-turnstile.verified {
-  border-color: #0051ba;
-  background: #f0f7ff;
-}
-
-.dl-turnstile-checkbox {
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  border: 2px solid #c4c4c4;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.dl-fake-turnstile:hover .dl-turnstile-checkbox {
-  border-color: #999;
-}
-.dl-fake-turnstile.verified .dl-turnstile-checkbox {
-  background: #0051ba;
-  border-color: #0051ba;
-}
-
-.dl-turnstile-checkbox-icon {
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  display: none;
-  line-height: 1;
-}
-.dl-fake-turnstile.verified .dl-turnstile-checkbox-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dl-turnstile-label {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+.df-turnstile-label {
   flex: 1;
   text-align: left;
-}
-.dl-turnstile-label-text {
   font-size: 14px;
-  font-weight: 400;
-  color: #333;
+  font-weight: 500;
+  color: #334155;
 }
-
-.dl-turnstile-branding {
+.df-turnstile-brand {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  flex-shrink: 0;
-  gap: 3px;
+  gap: 2px;
 }
-.dl-turnstile-cf-icon {
-  width: 50px;
+.df-turnstile-brand img {
+  height: 16px;
   opacity: 0.6;
 }
-.dl-turnstile-links {
+.df-turnstile-brand small {
   font-size: 9px;
-  color: #aaa;
+  color: #94a3b8;
 }
-.dl-turnstile-links a {
-  color: #888;
+.df-turnstile-brand small a {
+  color: #94a3b8;
   text-decoration: none;
 }
-.dl-turnstile-links a:hover {
-  text-decoration: underline;
+
+.df-verify-footer {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 12px;
+}
+.df-verify-footer .cf-brand {
+  font-weight: 600;
+  color: #f48120;
 }
 
-/* ================================================================
-   OFFERS LOCKER MODAL — exact style from sign-up pages
-   ================================================================ */
-.dl-offers-locker-overlay {
+/* ═══════════════════════════════
+   STAGE 3 — Offers Locker
+   ═══════════════════════════════ */
+.df-locker-overlay {
   position: fixed;
   inset: 0;
-  background: #000;
+  z-index: 9100;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 2002;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   opacity: 0;
   visibility: hidden;
-  padding: 20px;
-  gap: 16px;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+  padding: 16px;
+  gap: 14px;
 }
-.dl-offers-locker-overlay.active {
+.df-locker-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
-.dl-offers-locker-modal {
-  background: white;
-  border-radius: 20px;
-  padding: 40px 30px;
-  max-width: 480px;
-  width: 100%;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-  animation: dlOffersSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  text-align: center;
-  transform-origin: center center;
-}
-
-@keyframes dlOffersSlideUp {
-  from {
-    transform: translateY(40px) scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-/* Shake animations */
-@keyframes dlShakeHard {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  5% {
-    transform: translateX(-15px);
-  }
-  10% {
-    transform: translateX(15px);
-  }
-  15% {
-    transform: translateX(-15px);
-  }
-  20% {
-    transform: translateX(15px);
-  }
-  25% {
-    transform: translateX(-15px);
-  }
-  30% {
-    transform: translateX(15px);
-  }
-  35% {
-    transform: translateX(-10px);
-  }
-  40% {
-    transform: translateX(10px);
-  }
-  45% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-}
-
-@keyframes dlShakeTiny {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-3px);
-  }
-  50% {
-    transform: translateX(3px);
-  }
-  75% {
-    transform: translateX(-3px);
-  }
-}
-
-#dlOffersLockerContent.dl-shake-animation {
-  animation: dlShakeHard 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
-}
-#dlOffersLockerContent.dl-shake-tiny {
-  animation: dlShakeTiny 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
-}
-
-/* Locker header */
-.dl-offers-locker-header {
-  margin-bottom: 30px;
-}
-.dl-offers-locker-icon {
-  font-size: 64px;
-  color: #667eea;
-  display: inline-block;
-}
-.dl-offers-locker-header h2 {
-  font-size: 26px;
-  color: #0f172a;
-  margin: 12px 0 8px 0;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-.dl-offers-locker-header p {
-  font-size: 15px;
-  color: #64748b;
-  margin: 0;
-  line-height: 1.4;
-}
-.dl-offers-locker-header p .dl-highlight {
-  color: #667eea;
-  font-weight: 700;
-}
-
-/* Status badge */
-.dl-offers-locker-status {
-  display: inline-flex;
+/* Progress steps above card */
+.df-locker-steps {
+  display: flex;
   align-items: center;
-  gap: 5px;
-  background: white;
-  color: #f59e0b;
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  border: 1.5px solid #fcd34d;
-  z-index: 1;
-  white-space: nowrap;
-  margin-bottom: 12px;
+  gap: 0;
 }
-.dl-offers-locker-status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: #f59e0b;
-  border-radius: 50%;
-  animation: dlStatusPulse 1.5s ease infinite;
-}
-@keyframes dlStatusPulse {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
-  }
-  50% {
-    opacity: 0.6;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0);
-  }
-}
-
-/* Offers grid */
-.dl-offers-grid-wrapper {
-  position: relative;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.dl-offers-grid {
+.df-locker-step {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0;
-  border: none;
-  background: none;
-}
-
-/* Offer buttons */
-.dl-offer-button {
-  color: white;
-  border: none;
-  padding: 18px 22px;
-  border-radius: 14px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  min-height: 60px;
-  position: relative;
-  overflow: visible;
-  width: 100%;
-  gap: 10px;
-  letter-spacing: 0.2px;
-}
-
-/* Primary offer — green gradient with glow */
-.dl-offer-button.primary {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow:
-    0 8px 24px rgba(16, 185, 129, 0.35),
-    0 0 0 0 rgba(16, 185, 129, 0.4);
-  animation: dlOfferPulseGlow 2s ease-in-out infinite;
-}
-@keyframes dlOfferPulseGlow {
-  0%,
-  100% {
-    box-shadow:
-      0 8px 24px rgba(16, 185, 129, 0.35),
-      0 0 0 0 rgba(16, 185, 129, 0.4);
-  }
-  50% {
-    box-shadow:
-      0 8px 24px rgba(16, 185, 129, 0.35),
-      0 0 0 8px rgba(16, 185, 129, 0);
-  }
-}
-.dl-offer-button.primary:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 14px 32px rgba(16, 185, 129, 0.4);
-  animation: none;
-}
-.dl-offer-button.primary:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-/* Secondary offer — blue outline */
-.dl-offer-button.secondary {
-  background: white;
-  color: #2563eb;
-  border: 2px solid #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-}
-.dl-offer-button.secondary:hover {
-  background: #eff6ff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
-}
-.dl-offer-button.secondary:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-/* Offer badges */
-.dl-offer-badge {
-  position: absolute;
-  top: -9px;
-  right: 12px;
-  background: linear-gradient(135deg, #f43f5e, #ef4444);
-  color: white;
-  font-size: 8px;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.3px;
-  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);
-  z-index: 2;
-  text-transform: uppercase;
-  white-space: nowrap;
-  pointer-events: none;
-}
-.dl-offer-badge.hot {
-  background: linear-gradient(135deg, #f97316, #ef4444);
-  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
-}
-.dl-offer-badge.easy {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
-}
-
-.dl-offer-button .dl-offer-icon {
-  font-size: 22px;
-  flex-shrink: 0;
-}
-.dl-offer-button .dl-offer-arrow {
-  font-size: 18px;
-  flex-shrink: 0;
-  margin-left: auto;
-  opacity: 0.8;
-  transition: transform 0.2s ease;
-}
-.dl-offer-button:hover .dl-offer-arrow {
-  transform: translateX(3px);
-  opacity: 1;
-}
-.dl-offer-button span {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  font-weight: 700;
-}
-.dl-offer-button ion-icon {
-  font-size: 24px;
-}
-
-/* Offer loading text */
-.dl-offer-loading {
-  color: #64748b;
-  padding: 40px 20px;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-/* Locker footer */
-.dl-offers-locker-footer {
-  padding-top: 0;
-  margin-top: 0;
-}
-
-/* Countdown timer */
-.dl-locker-timer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: #fef3c7;
-  border: 1px solid #fcd34d;
-  border-radius: 8px;
-  padding: 2px 9px;
-  margin: 0 auto;
-  margin-bottom: 16px;
-  max-width: fit-content;
-  font-size: 13px;
-  font-weight: 600;
-  color: #92400e;
-}
-.dl-locker-timer ion-icon {
-  font-size: 16px;
-  color: #f59e0b;
-}
-.dl-locker-timer .dl-timer-val {
-  font-weight: 800;
-  color: #dc2626;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Trust badges */
-.dl-locker-trust {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
-}
-.dl-trust-item {
-  display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+}
+.df-locker-step .step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: #334155;
+  transition: background 0.3s;
+}
+.df-locker-step.done .step-dot {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+.df-locker-step.active .step-dot {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  animation: dfDotPulse 1.2s ease-in-out infinite;
+}
+.df-locker-step span {
+  font-size: 11px;
   color: #94a3b8;
   font-weight: 500;
 }
-.dl-trust-item ion-icon {
-  font-size: 13px;
+.df-locker-step.done span {
   color: #10b981;
 }
-
-/* ====== Progress Steps Bar (outside locker card) ====== */
-.dl-locker-progress {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 10px 20px;
-  border-radius: 30px;
-  backdrop-filter: blur(8px);
-  flex-shrink: 0;
+.df-locker-step.active span {
+  color: #fff;
 }
-.dl-locker-progress-step {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
-}
-.dl-locker-progress-step.done {
-  color: #10b981;
-}
-.dl-locker-progress-step.active {
-  color: white;
-}
-.dl-locker-progress-step .dl-step-num {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-}
-.dl-locker-progress-step.done .dl-step-num {
-  background: #10b981;
-  color: white;
-}
-.dl-locker-progress-step.active .dl-step-num {
-  background: white;
-  color: #2563eb;
-  animation: dlStepPulse 1.5s ease infinite;
-}
-@keyframes dlStepPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0);
-  }
-}
-.dl-locker-progress-line {
-  flex: 1;
+.df-locker-line {
+  width: 40px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 1px;
-  min-width: 20px;
+  background: #334155;
+  margin: 0 4px;
+  margin-bottom: 18px;
+  transition: background 0.3s;
 }
-.dl-locker-progress-line.done {
+.df-locker-line.done {
   background: #10b981;
 }
 
-/* Social proof (outside card) */
-.dl-locker-social {
+/* Locker card */
+.df-locker-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: scale(0.88) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Outfit", system-ui, sans-serif;
+  color: #0f172a;
+}
+.df-locker-overlay.active .df-locker-card {
+  transform: scale(1) translateY(0);
+}
+
+.df-locker-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+}
+.df-locker-gif {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.df-locker-header h2 {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.df-locker-header p {
+  font-size: 16px;
+  color: #64748b;
+}
+.df-locker-header p b {
+  color: #0f172a;
+}
+
+/* Offers area */
+.df-offers-wrap {
+  padding: 0 20px 20px;
+}
+.df-offers-status {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  flex-shrink: 0;
+  padding: 4px 10px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
-.dl-locker-social .dl-live-dot {
+.df-offers-status::before {
+  content: "";
   width: 6px;
   height: 6px;
-  background: #10b981;
   border-radius: 50%;
-  animation: dlLiveBlink 1.5s ease infinite;
+  background: #f59e0b;
+  animation: dfStatusPulse 1.5s ease-in-out infinite;
 }
-@keyframes dlLiveBlink {
+@keyframes dfStatusPulse {
   0%,
   100% {
     opacity: 1;
@@ -1104,429 +552,395 @@
     opacity: 0.3;
   }
 }
-.dl-locker-social strong {
-  color: white;
-  font-weight: 700;
-}
 
-/* Skeleton loading for offers */
-.dl-offer-skeleton {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.dl-skeleton-card {
-  background: #f1f5f9;
-  border-radius: 14px;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  overflow: hidden;
-}
-.dl-skeleton-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.5),
-    transparent
-  );
-  animation: dlSkeletonShimmer 1.5s infinite;
-}
-@keyframes dlSkeletonShimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-.dl-skeleton-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #dde3ea;
-  flex-shrink: 0;
-}
-.dl-skeleton-lines {
-  flex: 1;
+.df-offers-grid {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.dl-skeleton-line {
-  height: 12px;
+
+/* Offer card */
+.df-offer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #0f172a;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
+}
+.df-offer:hover {
+  border-color: #10b981;
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.12);
+  transform: translateY(-1px);
+}
+.df-offer-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.df-offer-icon ion-icon {
+  font-size: 20px;
+  color: #fff;
+}
+.df-offer-body {
+  flex: 1;
+  min-width: 0;
+}
+.df-offer-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.df-offer-desc {
+  font-size: 11.5px;
+  color: #64748b;
+}
+.df-offer-badge {
+  padding: 3px 8px;
   border-radius: 6px;
-  background: #dde3ea;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
 }
-.dl-skeleton-line:first-child {
-  width: 70%;
+.df-offer-badge.hot {
+  background: #fee2e2;
+  color: #dc2626;
 }
-.dl-skeleton-line:last-child {
-  width: 45%;
+.df-offer-badge.easy {
+  background: #d1fae5;
+  color: #059669;
 }
-.dl-skeleton-badge {
-  position: absolute;
-  top: -1px;
-  right: 14px;
-  width: 72px;
-  height: 18px;
-  border-radius: 0 0 8px 8px;
-  background: #dde3ea;
+.df-offer-arrow {
+  color: #94a3b8;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-/* ================================================================
-   SUCCESS STATE
-   ================================================================ */
-.dl-success-state {
-  animation: dlFadeIn 0.4s ease;
+/* Skeleton */
+.df-offer-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-@keyframes dlFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.df-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  animation: dfSkeletonPulse 1.5s ease-in-out infinite;
 }
-.dl-success-badge {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  display: grid;
-  place-items: center;
-  margin: 0 auto 16px;
-  animation: dlSuccessPulse 2s ease-in-out infinite;
+.df-skeleton-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #e2e8f0;
+  flex-shrink: 0;
 }
-@keyframes dlSuccessPulse {
+.df-skeleton-lines {
+  flex: 1;
+}
+.df-skeleton-line {
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+.df-skeleton-line:last-child {
+  width: 60%;
+  margin-bottom: 0;
+}
+@keyframes dfSkeletonPulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2);
+    opacity: 1;
   }
   50% {
-    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+    opacity: 0.5;
   }
 }
-.dl-success-badge ion-icon {
-  font-size: 36px;
+
+/* Footer */
+.df-locker-footer {
+  padding: 12px 20px 16px;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+}
+.df-locker-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+.df-locker-timer ion-icon {
+  font-size: 14px;
+}
+.df-locker-timer .timer-val {
+  font-weight: 700;
+  color: #ef4444;
+  font-variant-numeric: tabular-nums;
+}
+.df-locker-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+.df-locker-trust span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.df-locker-trust ion-icon {
+  font-size: 13px;
   color: #10b981;
 }
 
-/* Success details */
-.dl-success-details {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 16px 0 20px;
-  text-align: left;
-}
-.dl-detail-item {
+/* Social proof below card */
+.df-locker-social {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  font-size: 13px;
-  font-weight: 500;
-  color: #065f46;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #94a3b8;
 }
-.dl-detail-check {
-  width: 20px;
-  height: 20px;
+.df-locker-social .live-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #10b981;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
+  animation: dfLivePulse 2s ease-in-out infinite;
 }
-.dl-detail-check ion-icon {
-  font-size: 12px;
+@keyframes dfLivePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+.df-locker-social strong {
   color: #fff;
 }
 
-/* Install button */
-.dl-install-btn {
-  display: inline-flex;
+/* Shake animation */
+.df-locker-card.shake {
+  animation: dfShake 0.5s ease-in-out;
+}
+@keyframes dfShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+/* ═══════════════════════════════
+   STAGE 4 — Success
+   ═══════════════════════════════ */
+.df-success-state {
+  display: none;
+  text-align: center;
+}
+.df-success-state.active {
+  display: block;
+}
+.df-success-badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
+  animation: dfSuccessPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.df-success-badge ion-icon {
+  font-size: 32px;
+  color: #fff;
+}
+@keyframes dfSuccessPop {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.df-success-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #0f172a;
+}
+.df-success-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 20px;
+}
+.df-success-file {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  padding: 14px 32px;
-  border-radius: 14px;
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.df-success-file-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.df-success-file-icon ion-icon {
+  font-size: 18px;
+  color: #fff;
+}
+.df-success-file-info {
+  flex: 1;
+}
+.df-success-file-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.df-success-file-size {
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.df-success-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
   background: linear-gradient(135deg, #10b981, #059669);
   color: #fff;
   font-size: 15px;
   font-weight: 700;
   font-family: inherit;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.25s ease;
-  box-shadow: 0 10px 22px rgba(16, 185, 129, 0.22);
-  width: 100%;
-  margin-bottom: 12px;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 }
-.dl-install-btn:hover {
+.df-success-download:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
 }
-.dl-install-btn ion-icon {
+.df-success-download ion-icon {
   font-size: 20px;
 }
 
-.dl-success-footer-note {
+.df-success-note {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  font-size: 11px;
-  color: #94a3b8;
-  margin-top: 8px;
+  gap: 4px;
 }
-.dl-success-footer-note ion-icon {
+.df-success-note ion-icon {
   font-size: 13px;
   color: #10b981;
 }
 
-/* ====== INSTALL GUIDE ====== */
-.dl-install-guide {
-  margin-top: 4px;
-}
-.dl-install-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  background: #f8fafc;
-  color: #94a3b8;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-.dl-install-toggle:hover {
-  background: #f1f5f9;
-  color: #64748b;
-}
-.dl-install-toggle ion-icon {
-  font-size: 16px;
-  transition: transform 0.3s;
-}
-.dl-install-toggle.open ion-icon.dl-chevron {
-  transform: rotate(180deg);
-}
-.dl-install-steps {
-  display: none;
-  margin-top: 10px;
-  text-align: left;
-}
-.dl-install-steps.open {
-  display: block;
-  animation: dlFadeIn 0.3s ease;
-}
-.dl-install-step-item {
-  display: flex;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid #f1f5f9;
-}
-.dl-install-step-item:last-child {
-  border-bottom: none;
-}
-.dl-install-num {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.dl-install-text {
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.5;
-}
-.dl-install-text strong {
-  color: #0f172a;
-}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 520px) {
-  .dl-process-card {
-    border-radius: 20px;
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 480px) {
+  .df-card,
+  .df-verify-card {
+    padding: 24px 20px;
   }
-  .dl-app-hero {
-    padding: 24px 20px 20px;
+  .df-locker-card {
+    border-radius: 16px;
   }
-  .dl-download-body {
-    padding: 20px 18px 24px;
+  .df-locker-header {
+    padding: 20px 16px 12px;
   }
-  .dl-verification-modal {
-    max-width: 100%;
+  .df-offers-wrap {
+    padding: 0 14px 16px;
   }
-  .dl-verification-header {
-    padding: 24px 20px 0;
+  .df-locker-footer {
+    padding: 10px 14px 14px;
   }
-  .dl-verification-content {
-    padding: 20px;
-  }
-  .dl-verification-buttons {
-    padding: 0 20px 20px;
-  }
-  .dl-verification-header h2 {
-    font-size: 18px;
-  }
-  .dl-verify-btn {
-    padding: 11px 16px;
-    font-size: 13px;
-  }
-  .dl-offers-locker-modal {
-    padding: 24px 18px;
-  }
-  .dl-offers-locker-header h2 {
-    font-size: 22px;
-  }
-  .dl-offers-locker-header p {
-    font-size: 14px;
-  }
-  .dl-offer-button {
-    padding: 16px 18px;
-    font-size: 15px;
-    min-height: 58px;
+  .df-file-icon-inner {
+    width: 60px;
+    height: 60px;
     border-radius: 14px;
   }
-  .dl-offer-button:active {
-    transform: scale(0.97) !important;
+  .df-file-icon-inner ion-icon {
+    font-size: 28px;
   }
-  .dl-file-bar {
+  .df-title {
+    font-size: 18px;
+  }
+  .df-locker-line {
+    width: 28px;
+  }
+}
+@media (max-width: 360px) {
+  .df-card,
+  .df-verify-card {
+    padding: 20px 16px;
+  }
+  .df-verify-btn {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .df-offer {
     padding: 10px 12px;
   }
-}
-
-/* ================================================================
-   COMING SOON OVERLAY
-   ================================================================ */
-.dl-coming-soon-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  animation: dlCsFadeIn 0.3s ease;
-}
-@keyframes dlCsFadeIn {
-  from {
-    opacity: 0;
+  .df-offer-icon {
+    width: 34px;
+    height: 34px;
   }
-  to {
-    opacity: 1;
-  }
-}
-.dl-coming-soon-overlay.dl-cs-fade-out {
-  animation: dlCsFadeOut 0.35s ease forwards;
-}
-@keyframes dlCsFadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-.dl-coming-soon-card {
-  background: #fff;
-  border-radius: 22px;
-  padding: 40px 32px 32px;
-  width: min(380px, calc(100% - 32px));
-  text-align: center;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
-  animation: dlCsCardPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes dlCsCardPop {
-  from {
-    opacity: 0;
-    transform: scale(0.85) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-.dl-cs-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f59e0b, #f97316);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 18px;
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
-}
-.dl-cs-icon ion-icon {
-  font-size: 36px;
-  color: #fff;
-}
-.dl-cs-title {
-  font-size: 24px;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 10px;
-  letter-spacing: -0.3px;
-}
-.dl-cs-text {
-  font-size: 15px;
-  color: #64748b;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-.dl-cs-text strong {
-  color: #0f172a;
-}
-.dl-cs-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
-}
-.dl-cs-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
-}
-.dl-cs-btn:active {
-  transform: scale(0.97);
 }

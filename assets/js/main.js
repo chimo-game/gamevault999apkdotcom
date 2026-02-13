@@ -262,6 +262,23 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateTimer, 1000);
   })();
 
+  /* ===== SHOW ALL GAMES TOGGLE ===== */
+  (function () {
+    var btn = document.getElementById('showAllGames');
+    var extra = document.getElementById('gamesExtra');
+    if (!btn || !extra) return;
+
+    btn.addEventListener('click', function () {
+      if (extra.style.display === 'none') {
+        extra.style.display = 'contents';
+        btn.innerHTML = '<ion-icon name="chevron-up"></ion-icon> Show Less';
+      } else {
+        extra.style.display = 'none';
+        btn.innerHTML = '<ion-icon name="grid"></ion-icon> Show All 16 Games';
+      }
+    });
+  })();
+
   /* ===== BACK TO TOP BUTTON ===== */
   (function () {
     var btn = document.getElementById("backToTop");
