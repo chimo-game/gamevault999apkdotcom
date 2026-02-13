@@ -375,7 +375,9 @@ li {
   transition: all 0.2s ease;
   text-decoration: none;
 }
-.funds-btn ion-icon { font-size: 16px; }
+.funds-btn ion-icon {
+  font-size: 16px;
+}
 .funds-dep {
   background: rgba(16, 185, 129, 0.12);
   color: var(--success);
