@@ -1262,19 +1262,90 @@ li {
 
 /* ====== 23. RESPONSIVE ====== */
 @media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  .top-banner {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  .site-header {
+    padding: 12px 0;
+  }
+  .logo {
+    font-size: 17px;
+    gap: 8px;
+  }
+  .logo img {
+    height: 30px;
+  }
   .hero {
-    padding: 40px 0 28px;
+    padding: 32px 0 24px;
   }
   .hero h1 {
-    font-size: 28px;
+    font-size: 26px;
     letter-spacing: -0.8px;
   }
+  .hero h1 br {
+    display: none;
+  }
   .hero p {
-    font-size: 15px;
-    margin-bottom: 24px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .hero-badge {
+    font-size: 12px;
+    padding: 5px 12px;
+    margin-bottom: 14px;
   }
   .trust-strip {
-    gap: 12px 20px;
+    gap: 10px 16px;
+    margin-bottom: 28px;
+  }
+  .trust-item {
+    font-size: 12px;
+    gap: 5px;
+  }
+  .trust-item ion-icon {
+    font-size: 15px;
+  }
+  .payment-strip {
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .pay-badge {
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .pay-badge img {
+    height: 16px;
+  }
+  .quick-links {
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .ql {
+    padding: 10px 18px;
+    font-size: 13px;
+    flex: 1;
+    justify-content: center;
+  }
+  .social-banner {
+    gap: 12px 16px;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 36px;
+  }
+  .social-divider {
+    display: none;
+  }
+  .social-stat .num {
+    font-size: 20px;
+  }
+  .social-stat .label {
+    font-size: 11px;
   }
   .games-grid {
     grid-template-columns: 1fr 1fr;
@@ -1300,22 +1371,54 @@ li {
   .gc-bonus {
     font-size: 11px;
   }
-  .social-banner {
-    gap: 14px 20px;
-    padding: 16px;
+  .section-head h2 {
+    font-size: 20px;
   }
-  .social-divider {
-    display: none;
+  .section-head p {
+    font-size: 13px;
+  }
+  .dl-head h2 {
+    font-size: 20px;
+  }
+  .dl-head p {
+    font-size: 13px;
+  }
+  .dl-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .dl-game-card .gc-banner {
+    height: 110px;
+  }
+  .dl-game-body {
+    padding: 12px;
+    gap: 8px;
+  }
+  .dl-game-body .gc-name {
+    font-size: 14px;
+  }
+  .dl-game-info {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .dl-download-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .dl-download-btn ion-icon {
+    font-size: 15px;
+  }
+  .dl-stats-bar {
+    gap: 16px 20px;
+    margin-top: 28px;
+    padding-top: 20px;
+  }
+  .dl-stat {
+    font-size: 12px;
   }
   .header-stats span {
     display: none;
-  }
-  .payment-strip {
-    gap: 6px;
-  }
-  .pay-badge {
-    padding: 6px 10px;
-    font-size: 12px;
   }
   .btn-hero-primary {
     padding: 12px 24px;
@@ -1325,41 +1428,77 @@ li {
     padding: 12px 20px;
     font-size: 15px;
   }
+  .hero-urgency {
+    font-size: 12px;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
   .floating-cta {
     display: block;
   }
   .back-to-top {
     bottom: 80px;
     right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
   }
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  .site-footer {
+    padding: 32px 0 20px;
+  }
+  .footer-desc {
+    max-width: 100%;
+  }
   .winner-toast-container {
     bottom: 80px;
     left: 12px;
+    right: 12px;
   }
   .winner-toast {
-    min-width: 240px;
-    max-width: 300px;
+    min-width: unset;
+    max-width: 100%;
     padding: 10px 12px;
+  }
+  .seo-content {
+    padding: 40px 0 24px;
   }
   .seo-features {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
   .seo-block h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
   .seo-block h3 {
-    font-size: 19px;
+    font-size: 18px;
+  }
+  .seo-block p {
+    font-size: 14px;
+  }
+  .seo-feature {
+    padding: 16px;
+  }
+  .seo-games-list span {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .faq-section {
+    padding: 24px 0 40px;
   }
   .faq-item summary {
-    padding: 14px 18px;
-    font-size: 15px;
+    padding: 14px 16px;
+    font-size: 14px;
+    gap: 8px;
   }
   .faq-answer {
-    padding: 0 18px 14px;
+    padding: 0 16px 14px;
+  }
+  .faq-answer p {
+    font-size: 13px;
   }
   .site-nav {
     display: none;
@@ -1367,24 +1506,80 @@ li {
   .breadcrumb {
     display: none;
   }
+  .download-section {
+    padding: 48px 0 40px;
+  }
+  .games-section {
+    padding-bottom: 40px;
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+  .hero h1 {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .hero p {
+    font-size: 13px;
+  }
+  .hero-cta {
+    flex-direction: column;
+  }
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+    font-size: 14px;
+  }
+  .trust-strip {
+    gap: 8px 14px;
+  }
+  .trust-item {
+    font-size: 11px;
+  }
+  .pay-badge span {
+    display: none;
+  }
+  .pay-badge {
+    padding: 8px 10px;
+  }
+  .social-stat .num {
+    font-size: 18px;
+  }
   .dl-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr;
     gap: 14px;
   }
   .dl-game-card .gc-banner {
-    height: 130px;
+    height: 140px;
   }
-  .dl-stats-bar {
-    gap: 16px;
+  .dl-game-body {
+    padding: 14px;
+    gap: 10px;
+  }
+  .dl-game-body .gc-name {
+    font-size: 15px;
+  }
+  .dl-download-btn {
+    padding: 11px 16px;
+    font-size: 13px;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 380px) {
+  .logo {
+    font-size: 15px;
+    gap: 6px;
+  }
+  .logo img {
+    height: 26px;
+  }
   .hero h1 {
-    font-size: 24px;
+    font-size: 20px;
   }
   .games-grid {
     gap: 8px;
@@ -1406,30 +1601,25 @@ li {
   .gc-cta ion-icon {
     font-size: 14px;
   }
-  .pay-badge span {
-    display: none;
-  }
-  .social-stat .num {
-    font-size: 18px;
+  .gc-banner {
+    height: 100px;
   }
   .ql {
-    padding: 9px 16px;
-    font-size: 13px;
-  }
-  .hero-urgency {
+    padding: 9px 14px;
     font-size: 12px;
-    gap: 6px;
   }
-  .btn-hero-primary {
-    padding: 12px 20px;
-    font-size: 14px;
-    width: 100%;
-    justify-content: center;
+  .top-banner {
+    font-size: 11px;
+    padding: 7px 10px;
   }
-  .btn-hero-secondary {
-    padding: 12px 20px;
-    font-size: 14px;
-    width: 100%;
-    justify-content: center;
+  .top-banner .code {
+    padding: 1px 6px;
+  }
+  .seo-block h2 {
+    font-size: 20px;
+  }
+  .faq-item summary {
+    font-size: 13px;
+    padding: 12px 14px;
   }
 }
