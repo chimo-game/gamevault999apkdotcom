@@ -357,6 +357,44 @@ li {
   color: var(--text);
 }
 
+/* Deposit / Withdraw row */
+.funds-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.funds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.funds-btn ion-icon { font-size: 16px; }
+.funds-dep {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+.funds-dep:hover {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.funds-wdw {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.funds-wdw:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+}
+
 /* ====== 11. SECTION HEAD ====== */
 .section-head {
   text-align: center;
