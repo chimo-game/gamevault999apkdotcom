@@ -353,7 +353,7 @@ li {
   border: 1px solid var(--border);
 }
 .si-wdw:hover {
-  border-color: rgba(255,255,255,0.16);
+  border-color: rgba(255, 255, 255, 0.16);
   color: var(--text);
 }
 

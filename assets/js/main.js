@@ -160,16 +160,17 @@
       var bias = pull > 0.5 ? 0.42 : pull < -0.5 ? 0.25 : 0.35;
       var change = 0;
       if (rand < bias) change = 1;
-      else if (rand < bias + 0.30) change = -1;
+      else if (rand < bias + 0.3) change = -1;
       // else change stays 0 — natural pause
 
       count = Math.max(target - 300, Math.min(target + 300, count + change));
       el.textContent = count.toLocaleString();
 
       // Random delay: 2–6 seconds, occasional longer pauses (8–12s)
-      var delay = Math.random() < 0.15
-        ? 8000 + Math.random() * 4000   // 15% chance of longer pause
-        : 2000 + Math.random() * 4000;  // normal 2-6s
+      var delay =
+        Math.random() < 0.15
+          ? 8000 + Math.random() * 4000 // 15% chance of longer pause
+          : 2000 + Math.random() * 4000; // normal 2-6s
       setTimeout(tick, delay);
     }
 
@@ -264,16 +265,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ===== SHOW ALL GAMES TOGGLE ===== */
   (function () {
-    var btn = document.getElementById('showAllGames');
-    var extra = document.getElementById('gamesExtra');
+    var btn = document.getElementById("showAllGames");
+    var extra = document.getElementById("gamesExtra");
     if (!btn || !extra) return;
 
-    btn.addEventListener('click', function () {
-      if (extra.style.display === 'none') {
-        extra.style.display = 'contents';
+    btn.addEventListener("click", function () {
+      if (extra.style.display === "none") {
+        extra.style.display = "contents";
         btn.innerHTML = '<ion-icon name="chevron-up"></ion-icon> Show Less';
       } else {
-        extra.style.display = 'none';
+        extra.style.display = "none";
         btn.innerHTML = '<ion-icon name="grid"></ion-icon> Show All 16 Games';
       }
     });
