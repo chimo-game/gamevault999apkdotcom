@@ -339,9 +339,12 @@
 
     <section class="card" id="mainCard" aria-label="Sign up form">
       <div class="header">
-        <div class="title">
+        <div class="header-left">
+          <img src="../assets/images/games/slotsofvegas.gif" alt="Slots of Vegas" class="game-logo">
+          <div class="title">
           <h1>Welcome To Slots of Vegas</h1>
           <p>No credit card needed—claim your bonus now.</p>
+        </div>
         </div>
         <div class="trust" title="We do not post to your email.">
           <span class="dot"></span>
@@ -407,6 +410,14 @@
                 <span>PayPal</span>
               </div>
             </label>
+          </div>
+          <div class="payment-handle-wrap" id="paymentHandleWrap">
+            <div class="input-capsule">
+              <div class="input-icon" id="payHandleIcon"><ion-icon name="logo-usd"></ion-icon></div>
+              <input class="input" type="text" id="paymentHandle" placeholder="$cashtag" autocomplete="off" />
+              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            </div>
+            <div class="hint" id="payHandleHint">Enter your CashApp $cashtag for cashouts.</div>
           </div>
           <div class="hint">Choose the method you prefer for future cashouts.</div>
         </div>

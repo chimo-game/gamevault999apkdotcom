@@ -245,8 +245,48 @@ email.addEventListener("input", () => {
 });
 
 document.querySelectorAll('input[name="payment"]').forEach((r) => {
-  r.addEventListener("change", updateProgress);
+  r.addEventListener("change", function () {
+    updateProgress();
+    updatePaymentHandle(this.value);
+  });
 });
+
+// ── Payment handle dynamic input ──
+const PAY_CONFIG = {
+  CashApp:  { icon: 'logo-usd',     placeholder: '$cashtag',        hint: 'Enter your CashApp $cashtag for cashouts.' },
+  Venmo:    { icon: 'logo-venmo',    placeholder: '@username',       hint: 'Enter your Venmo @username for cashouts.' },
+  PayPal:   { icon: 'logo-paypal',   placeholder: 'email@paypal.com', hint: 'Enter your PayPal email for cashouts.' }
+};
+
+function updatePaymentHandle(method) {
+  const wrap = document.getElementById('paymentHandleWrap');
+  const input = document.getElementById('paymentHandle');
+  const icon = document.getElementById('payHandleIcon');
+  const hint = document.getElementById('payHandleHint');
+  if (!wrap || !input) return;
+
+  const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
+  input.placeholder = cfg.placeholder;
+  if (icon) icon.innerHTML = `<ion-icon name="${cfg.icon}"></ion-icon>`;
+  if (hint) hint.textContent = cfg.hint;
+  input.value = '';
+
+  // Slide in
+  wrap.classList.add('visible');
+  setTimeout(() => input.focus(), 300);
+}
+
+// Show handle input on page load for default-checked method
+(function() {
+  const checked = document.querySelector('input[name="payment"]:checked');
+  if (checked) {
+    const wrap = document.getElementById('paymentHandleWrap');
+    if (wrap) {
+      // Delay slightly so the initial page render is clean
+      setTimeout(() => updatePaymentHandle(checked.value), 400);
+    }
+  }
+})();
 
 // Coupon code handlers
 coupon.addEventListener("input", function () {
