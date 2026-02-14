@@ -108,35 +108,46 @@
 
   <div class="modal-overlay" id="processModal" aria-hidden="true">
     <div class="process-card" role="dialog" aria-modal="true" aria-label="Creating account">
-      <!-- Processing State -->
+      <!-- Processing State — Orbital Ring -->
       <div id="processingState">
         <div class="pc-progress-ring">
-          <svg viewBox="0 0 80 80">
-            <circle class="ring-bg" cx="40" cy="40" r="35" />
-            <circle class="ring-fill" id="progressRing" cx="40" cy="40" r="35" />
+          <svg viewBox="0 0 140 140">
+            <defs>
+              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="50%" stop-color="#a78bfa" />
+                <stop offset="100%" stop-color="#10b981" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="70" cy="70" r="60" />
+            <circle class="ring-fill" id="progressRing" cx="70" cy="70" r="60" />
           </svg>
-          <div class="ring-icon">
-            <ion-icon name="person-add" id="ringIcon"></ion-icon>
+          <div class="ring-icon" id="ringIcon">
+            <ion-icon name="shield-checkmark"></ion-icon>
           </div>
+          <div class="orbital-dots" id="orbitalDots">
+            <div class="orbital-dot"></div>
+            <div class="orbital-dot"></div>
+            <div class="orbital-dot"></div>
+          </div>
+          <div class="ring-percent" id="ringPercent">0%</div>
         </div>
         <div class="pc-head">
           <h2>Setting Up Your Account</h2>
           <p>This only takes a moment...</p>
         </div>
 
-        <div class="steps">
-          <div class="step" id="step1">
-            <div class="badge"></div><span>Verifying your details</span>
-          </div>
-          <div class="step" id="step2">
-            <div class="badge"></div><span>Connecting <b id="payNameDisplay">CashApp</b> cashout</span>
-          </div>
-          <div class="step" id="step3">
-            <div class="badge"></div><span>Applying <b style="color:#2563eb">$10 bonus</b> credit</span>
-          </div>
-          <div class="step" id="step4">
-            <div class="badge"></div><span>Finalizing account setup</span>
-          </div>
+        <div class="pc-status" id="pcStatus">
+          <ion-icon name="shield-checkmark"></ion-icon>
+          <span id="pcStatusText">Verifying your details...</span>
+        </div>
+
+        <!-- Hidden steps for JS compat -->
+        <div class="steps" style="display:none">
+          <div class="step" id="step1"><div class="badge"></div><span>Verifying</span></div>
+          <div class="step" id="step2"><div class="badge"></div><span>Connecting <b id="payNameDisplay">CashApp</b></span></div>
+          <div class="step" id="step3"><div class="badge"></div><span>Applying bonus</span></div>
+          <div class="step" id="step4"><div class="badge"></div><span>Finalizing</span></div>
         </div>
 
         <div class="pc-secure-note">
@@ -147,54 +158,55 @@
 
       <!-- Success State (hidden initially) -->
       <div id="successState" style="display: none;">
-        <div class="success-badge">
-          <ion-icon name="checkmark-circle"></ion-icon>
-        </div>
-        <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin: 0 0 6px; text-align: center;">You're All
-          Set!</h2>
-        <p class="success-subtitle" id="successSubtitle"
-          style="color: #64748b; font-size: 14px; margin: 0 0 20px; text-align: center;">Your account has been created
-          and your bonus is ready.</p>
-
-        <div class="success-details">
-          <div class="detail-item">
-            <div class="detail-check">
-              <ion-icon name="checkmark"></ion-icon>
+        <div class="holo-card-inner">
+          <div class="success-badge">
+            <div class="diamond-shape">
+              <ion-icon name="checkmark-circle"></ion-icon>
             </div>
-            <span>Account created successfully</span>
           </div>
-          <div class="detail-item">
-            <div class="detail-check">
-              <ion-icon name="checkmark"></ion-icon>
+          <h2 class="success-heading">You’re All Set!</h2>
+          <p class="success-subtitle" id="successSubtitle">Your account has been created and your bonus is ready.</p>
+
+          <div class="success-details">
+            <div class="detail-item">
+              <span class="detail-label">Account</span>
+              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> Created</span>
             </div>
-            <span>Cashout method connected</span>
-          </div>
-          <div class="detail-item" id="bonusDetailItem">
-            <div class="detail-check">
-              <ion-icon name="checkmark"></ion-icon>
+            <div class="detail-item">
+              <span class="detail-label">Payment</span>
+              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> Linked</span>
             </div>
-            <span>$10 Free Play bonus applied</span>
+            <div class="detail-item" id="bonusDetailItem">
+              <span class="detail-label">Bonus</span>
+              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> $10 Applied</span>
+            </div>
           </div>
-        </div>
 
-        <div class="success-bonus" id="bonusCardItem">
-          <div class="bonus-icon">
-            <ion-icon name="gift"></ion-icon>
+          <div class="success-bonus" id="bonusCardItem">
+            <div class="bonus-icon">
+              <ion-icon name="gift"></ion-icon>
+            </div>
+            <div class="bonus-text">
+              <strong>$10 Free Play Bonus</strong>
+              <span>Credited to your account</span>
+            </div>
+            <div class="bonus-amount">$10</div>
           </div>
-          <div class="bonus-text">
-            <strong>$10 Free Play Bonus</strong>
-            <span>Credited to your account</span>
+
+          <button class="success-cta" id="successClose">
+            <ion-icon name="shield-checkmark"></ion-icon>
+            Verify & Claim Bonus
+          </button>
+
+          <div class="success-urgency">
+            <ion-icon name="time-outline"></ion-icon>
+            Bonus expires soon — verify now to lock it in
           </div>
-        </div>
 
-        <button class="success-cta" id="successClose">
-          <ion-icon name="arrow-forward-circle"></ion-icon>
-          Activate My Account
-        </button>
-
-        <div class="success-footer-note">
-          <ion-icon name="shield-checkmark"></ion-icon>
-          One quick step to activate your account
+          <div class="success-footer-note">
+            <ion-icon name="lock-closed"></ion-icon>
+            Quick 30-second verification required
+          </div>
         </div>
       </div>
     </div>
@@ -300,14 +312,7 @@
         </div>
       </div>
 
-      <div class="verification-buttons">
-        <button type="button" class="verify-btn cancel" id="verificationCancel" onclick="closeVerificationModal()" style="display:none">
-          Cancel
-        </button>
-        <button type="button" class="verify-btn" id="verificationConfirm" disabled>
-          <span>Verify & Continue</span>
-        </button>
-      </div>
+
 
       <div class="verification-footer">
         <span>Performance & security by <span class="cf-brand">Cloudflare</span></span>
@@ -352,22 +357,26 @@
         <small id="progressText">25%</small>
       </div>
 
-      </div>
-
       <form id="regForm" autocomplete="on" novalidate>
+        <div class="capsule-group">
         <div class="row">
           <div class="field" id="f-username">
             <label for="username">Username</label>
-            <input class="input" type="text" id="username" placeholder="Pick Username" autocomplete="username"
-              required />
-            <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            <div class="input-capsule">
+              <div class="input-icon"><ion-icon name="person-outline"></ion-icon></div>
+              <input class="input" type="text" id="username" placeholder="Pick a username" autocomplete="username" required />
+              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            </div>
             <div class="hint" id="uHint">3+ characters. No spaces recommended.</div>
           </div>
 
           <div class="field" id="f-email">
             <label for="email">Email</label>
-            <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
-            <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            <div class="input-capsule">
+              <div class="input-icon"><ion-icon name="mail-outline"></ion-icon></div>
+              <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            </div>
             <div class="hint" id="eHint">We'll send your confirmation details here.</div>
           </div>
         </div>
@@ -434,11 +443,17 @@
           <div class="hint" id="cHint">Recommended: <b>CLAIM10</b></div>
         </div>
 
+        </div><!-- /capsule-group -->
         <div class="cta">
           <button type="submit" class="submit" id="submitBtn">
-            <span>Create Account</span>
+            <span>Create My Account</span>
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
+          <div class="cta-micro">
+            <span class="cta-micro-item"><ion-icon name="flash"></ion-icon> Instant setup</span>
+            <span class="cta-micro-item"><ion-icon name="card-outline"></ion-icon> No credit card</span>
+            <span class="cta-micro-item"><ion-icon name="people"></ion-icon> <span id="ctaSignupCount">12,847</span> joined today</span>
+          </div>
           <div class="legal">
             By creating an account, you agree to our <a href="#" onclick="return false;">Terms</a> and <a href="#"
               onclick="return false;">Privacy Policy</a>.
@@ -508,8 +523,8 @@
           <img src="../assets/images/giphy.gif" alt="System requirement"
             style="width: 100px; height: 100px; object-fit: contain;">
         </div>
-        <h2>Are you a real person?</h2>
-        <p>Complete <b>1 quick step</b> below to verify your identity</p>
+        <h2>Are you human?</h2>
+        <p>Please complete <b>1 quick action</b> below to verify you're not a robot.</p>
       </div>
 
       <div class="offers-grid-wrapper">

@@ -894,6 +894,110 @@
   color: #10b981;
 }
 
+/* ── Coming Soon state (no-APK games) ── */
+.df-coming-soon {
+  display: none;
+  text-align: center;
+}
+.df-coming-soon.active {
+  display: block;
+}
+
+.df-cs-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: dfSuccessPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.df-cs-icon ion-icon {
+  font-size: 34px;
+  color: #fff;
+}
+
+.df-cs-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.df-cs-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.df-cs-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.df-cs-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #334155;
+  text-align: left;
+}
+.df-cs-feat ion-icon {
+  font-size: 18px;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.df-cs-signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.df-cs-signup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+.df-cs-signup ion-icon {
+  font-size: 20px;
+}
+
+.df-cs-notify {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+.df-cs-notify ion-icon {
+  font-size: 14px;
+  color: #3b82f6;
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 480px) {
   .df-card,

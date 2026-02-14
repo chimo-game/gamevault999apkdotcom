@@ -304,20 +304,20 @@
   // ════════════════════════════
   // STAGE 4: Success / Download
   // ════════════════════════════
+  const comingSoonState = document.getElementById("dfComingSoonState");
+
   function onLockerComplete() {
     closeLocker();
 
-    // Re-open the process modal with success state
     processState.style.display = "none";
-    successState.classList.add("active");
-    modal.classList.add("active");
-
-    // Complete progress to 100%
     updateProgress(100);
     setStep(4, "done");
 
-    // Auto-trigger download after 1.5s for games with APK
     if (APK_URL) {
+      // Has APK → show download success
+      successState.classList.add("active");
+      modal.classList.add("active");
+
       setTimeout(() => {
         const a = document.createElement("a");
         a.href = APK_URL;
@@ -327,6 +327,10 @@
         a.click();
         a.remove();
       }, 1500);
+    } else {
+      // No APK → show coming soon state
+      if (comingSoonState) comingSoonState.classList.add("active");
+      modal.classList.add("active");
     }
   }
 
