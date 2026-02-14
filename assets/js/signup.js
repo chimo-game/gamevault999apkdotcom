@@ -78,6 +78,25 @@ const cHint = document.getElementById("cHint");
 const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim());
 const validUser = (v) => v.trim().length >= 3;
 
+// Payment handle validators per method
+const PAY_VALIDATORS = {
+  CashApp: (v) => /^\$[a-zA-Z0-9_]{1,20}$/.test(v.trim()),
+  Venmo:   (v) => /^@[a-zA-Z0-9_-]{1,30}$/.test(v.trim()),
+  PayPal:  (v) => validEmail(v)
+};
+
+function getSelectedPayMethod() {
+  const sel = document.querySelector('input[name="payment"]:checked');
+  return sel ? sel.value : 'CashApp';
+}
+
+function validPayHandle(v) {
+  if (!v || !v.trim()) return false;
+  const method = getSelectedPayMethod();
+  const fn = PAY_VALIDATORS[method] || PAY_VALIDATORS.CashApp;
+  return fn(v);
+}
+
 function setFieldState(wrapper, state, messageEl, msg) {
   wrapper.classList.remove("ok", "bad");
   if (state) wrapper.classList.add(state);
@@ -253,9 +272,9 @@ document.querySelectorAll('input[name="payment"]').forEach((r) => {
 
 // ── Payment handle dynamic input ──
 const PAY_CONFIG = {
-  CashApp:  { icon: 'logo-usd',     placeholder: '$cashtag',        hint: 'Enter your CashApp $cashtag for cashouts.' },
-  Venmo:    { icon: 'logo-venmo',    placeholder: '@username',       hint: 'Enter your Venmo @username for cashouts.' },
-  PayPal:   { icon: 'logo-paypal',   placeholder: 'email@paypal.com', hint: 'Enter your PayPal email for cashouts.' }
+  CashApp:  { icon: 'logo-usd',     placeholder: '$cashtag',        hint: 'Enter your CashApp $cashtag for cashouts.',       badHint: 'Letters, numbers & underscores only.', prefix: '$' },
+  Venmo:    { icon: 'logo-venmo',    placeholder: '@username',       hint: 'Enter your Venmo @username for cashouts.',        badHint: 'Letters, numbers, hyphens & underscores only.', prefix: '@' },
+  PayPal:   { icon: 'logo-paypal',   placeholder: 'email@paypal.com', hint: 'Enter your PayPal email for cashouts.',           badHint: 'Enter a valid email address.', prefix: '' }
 };
 
 function updatePaymentHandle(method) {
@@ -263,6 +282,7 @@ function updatePaymentHandle(method) {
   const input = document.getElementById('paymentHandle');
   const icon = document.getElementById('payHandleIcon');
   const hint = document.getElementById('payHandleHint');
+  const field = document.getElementById('f-payment');
   if (!wrap || !input) return;
 
   const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
@@ -271,10 +291,53 @@ function updatePaymentHandle(method) {
   if (hint) hint.textContent = cfg.hint;
   input.value = '';
 
+  // Reset validation state
+  if (field) field.classList.remove('ok', 'bad');
+
   // Slide in
   wrap.classList.add('visible');
   setTimeout(() => input.focus(), 300);
 }
+
+// Real-time payment handle validation + auto-prefix
+(function() {
+  const input = document.getElementById('paymentHandle');
+  if (!input) return;
+  input.addEventListener('input', function() {
+    const field = document.getElementById('f-payment');
+    const hint = document.getElementById('payHandleHint');
+    const method = getSelectedPayMethod();
+    const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
+
+    // Auto-prefix: inject $ (CashApp) or @ (Venmo) so users never forget it
+    const pfx = cfg.prefix || '';
+    if (pfx) {
+      let v = this.value;
+      if (v !== pfx) {                       // leave lone prefix alone
+        while (v.charAt(0) === pfx) v = v.slice(1); // strip dupes
+        const want = v ? pfx + v : '';       // re-add single prefix or clear
+        if (this.value !== want) {
+          this.value = want;
+          this.setSelectionRange(want.length, want.length);
+        }
+      }
+    }
+
+    const val = this.value.trim();
+
+    if (!val) {
+      if (field) field.classList.remove('ok', 'bad');
+      if (hint) hint.textContent = cfg.hint;
+    } else if (validPayHandle(val)) {
+      if (field) { field.classList.remove('bad'); field.classList.add('ok'); }
+      if (hint) hint.textContent = 'Looks good!';
+    } else {
+      if (field) { field.classList.remove('ok'); field.classList.add('bad'); }
+      if (hint) hint.textContent = cfg.badHint;
+    }
+    updateProgress();
+  });
+})();
 
 // Show handle input on page load for default-checked method
 (function() {
@@ -424,6 +487,8 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
 
   const uOk = validUser(username.value);
   const eOk = validEmail(email.value);
+  const payHandle = document.getElementById('paymentHandle');
+  const pOk = payHandle ? validPayHandle(payHandle.value) : true;
 
   if (!uOk)
     setFieldState(
@@ -434,8 +499,16 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     );
   if (!eOk)
     setFieldState(fEmail, "bad", eHint, "Please enter a valid email address.");
+  if (!pOk && payHandle) {
+    const method = getSelectedPayMethod();
+    const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
+    const field = document.getElementById('f-payment');
+    const hint = document.getElementById('payHandleHint');
+    if (field) { field.classList.remove('ok'); field.classList.add('bad'); }
+    if (hint) hint.textContent = payHandle.value.trim() ? cfg.badHint : 'This field is required.';
+  }
 
-  if (!uOk || !eOk) {
+  if (!uOk || !eOk || !pOk) {
     const card = document.getElementById("mainCard");
     card.animate(
       [
