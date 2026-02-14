@@ -2115,7 +2115,7 @@ label {
 
 /* ── Frosted CTA with holographic border ── */
 .success-cta {
-  color: #f1f5f9;
+  color: #fff;
   border: 1.5px solid transparent;
   padding: 15px 32px;
   font-size: 15px;
@@ -2130,15 +2130,11 @@ label {
   gap: 8px;
   position: relative;
   overflow: hidden;
-  /* Animated holographic border via background-clip */
-  background-image:
-    linear-gradient(#0c1220, #0c1220),
-    linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  background-size:
-    100%,
-    300% 300%;
+  /* Solid gradient fill by default */
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  box-shadow:
+    0 4px 20px rgba(99, 102, 241, 0.3),
+    0 0 40px rgba(59, 130, 246, 0.08);
 }
 
 #successState.visible .success-cta {
@@ -2146,12 +2142,11 @@ label {
 }
 
 .success-cta:hover {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)),
-    linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
-  background-size:
-    100%,
-    300% 300%;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)) padding-box,
+    linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #10b981) border-box;
+  border-color: transparent;
+  color: #f1f5f9;
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(99, 102, 241, 0.25);
 }
