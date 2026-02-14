@@ -1485,24 +1485,24 @@ label {
   }
 
   .choice {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
   }
 
   .choice .opt:last-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
   .pill {
-    padding: 10px 6px;
-    min-height: 46px;
+    padding: 8px 4px;
+    min-height: 44px;
     border-radius: 10px;
-    gap: 6px;
+    gap: 5px;
   }
   .pill span {
-    font-size: 12px;
+    font-size: 11px;
   }
   .pill img {
-    height: 18px;
+    height: 16px;
   }
 
   .promo-banner {
@@ -1708,13 +1708,21 @@ label {
   }
 
   .choice {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
   .choice .opt:last-child {
     grid-column: auto;
   }
   .pill {
-    min-height: 42px;
+    min-height: 40px;
+    padding: 6px 2px;
+    gap: 4px;
+  }
+  .pill span {
+    font-size: 10px;
+  }
+  .pill img {
+    height: 14px;
   }
 
   .coupon-area {
