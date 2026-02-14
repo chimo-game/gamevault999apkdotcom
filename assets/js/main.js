@@ -539,41 +539,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ===== MOBILE NAV ===== */
   (function () {
-    var btn = document.getElementById('hamburgerBtn');
-    var nav = document.getElementById('siteNav');
-    var backdrop = document.getElementById('navBackdrop');
+    var btn = document.getElementById("hamburgerBtn");
+    var nav = document.getElementById("siteNav");
+    var backdrop = document.getElementById("navBackdrop");
     if (!btn || !nav) return;
 
     function openNav() {
-      nav.classList.add('open');
-      btn.classList.add('active');
-      btn.setAttribute('aria-expanded', 'true');
-      if (backdrop) backdrop.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      nav.classList.add("open");
+      btn.classList.add("active");
+      btn.setAttribute("aria-expanded", "true");
+      if (backdrop) backdrop.classList.add("active");
+      document.body.style.overflow = "hidden";
     }
     function closeNav() {
-      nav.classList.remove('open');
-      btn.classList.remove('active');
-      btn.setAttribute('aria-expanded', 'false');
-      if (backdrop) backdrop.classList.remove('active');
-      document.body.style.overflow = '';
+      nav.classList.remove("open");
+      btn.classList.remove("active");
+      btn.setAttribute("aria-expanded", "false");
+      if (backdrop) backdrop.classList.remove("active");
+      document.body.style.overflow = "";
     }
 
-    btn.addEventListener('click', function () {
-      nav.classList.contains('open') ? closeNav() : openNav();
+    btn.addEventListener("click", function () {
+      nav.classList.contains("open") ? closeNav() : openNav();
     });
     if (backdrop) {
-      backdrop.addEventListener('click', closeNav);
+      backdrop.addEventListener("click", closeNav);
     }
 
     // Close on nav link click
-    nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', closeNav);
+    nav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", closeNav);
     });
 
     // Sync mobile online count with desktop
-    var mobileOnline = document.getElementById('mobileOnline');
-    var desktopOnline = document.getElementById('onlineCount');
+    var mobileOnline = document.getElementById("mobileOnline");
+    var desktopOnline = document.getElementById("onlineCount");
     if (mobileOnline && desktopOnline) {
       new MutationObserver(function () {
         mobileOnline.textContent = desktopOnline.textContent;
