@@ -2490,11 +2490,11 @@ label {
 }
 
 #offersLockerContent.shake-animation {
-  animation: shakeHard 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+  animation: none !important;
 }
 
 #offersLockerContent.shake-tiny {
-  animation: shakeTiny 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+  animation: none !important;
 }
 
 .offers-locker-header {
@@ -2629,12 +2629,8 @@ label {
   100% { left: 100%; }
 }
 
-/* ── Secondary tile (dark with purple accent) ── */
-.offer-tile.secondary {
-  background: rgba(255,255,255,.03);
-  border: 1.5px solid rgba(139,92,246,.2);
-  box-shadow: 0 4px 16px rgba(0,0,0,.2);
-}
+/* Secondary tile — hidden (minimalist) */
+.offer-tile.secondary { display: none; }
 
 .offer-tile.secondary:hover {
   border-color: rgba(139,92,246,.35);
@@ -2643,17 +2639,8 @@ label {
   box-shadow: 0 8px 24px rgba(139,92,246,.15);
 }
 
-/* ── OR separator before secondary ── */
-.offer-or-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #4b5e80;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+/* ── OR separator — hidden (minimalist) ── */
+.offer-or-divider { display: none; }
 .offer-or-divider::before,
 .offer-or-divider::after {
   content: '';
@@ -2812,23 +2799,8 @@ label {
   50%      { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
 }
 
-/* ── Reward tease chip (below primary) ── */
-.tile-reward-chip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background: rgba(16,185,129,.06);
-  border: 1px solid rgba(16,185,129,.15);
-  font-size: 12px;
-  font-weight: 700;
-  color: #34d399;
-  width: fit-content;
-  margin: -4px auto 0;
-  animation: rewardGlow 2.5s ease infinite alternate;
-}
+/* ── Reward chip — hidden (minimalist) ── */
+.tile-reward-chip { display: none; }
 
 .tile-reward-chip ion-icon {
   font-size: 15px;
@@ -2988,15 +2960,8 @@ label {
   font-variant-numeric: tabular-nums;
 }
 
-.locker-social {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
-  flex-shrink: 0;
-}
+/* Social proof — hidden (minimalist) */
+.locker-social { display: none; }
 
 .locker-social .live-dot {
   width: 6px;

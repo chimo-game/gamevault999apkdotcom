@@ -681,32 +681,24 @@ function loadOffersLocker() {
         '<div class="offer-loading">No offers available at this time.</div>';
       return;
     }
-    const limitedOffers = offers.slice(0, 2);
+    const limitedOffers = offers.slice(0, 1);
       let offersHtml = "";
 
       limitedOffers.forEach((offer, index) => {
-        const isPrimary = index === 0;
-        const tileClass = isPrimary ? 'primary' : 'secondary';
-        const stepLabel = isPrimary ? 'STEP 1 OF 1' : 'ALTERNATIVE';
-        const offerName = offer.name || (isPrimary ? 'Quick Verification' : 'Alternative Option');
-        const offerAction = offer.conversion || (isPrimary ? 'Complete a quick action to verify' : 'Another way to unlock your account');
+        const offerName = offer.name || 'Quick Verification';
+        const offerAction = offer.conversion || 'Complete a quick action to verify';
         const offerIcon = offer.network_icon || '';
-
-        // OR divider before secondary
-        if (!isPrimary) {
-          offersHtml += '<div class="offer-or-divider">or</div>';
-        }
 
         const iconHtml = offerIcon
           ? `<img src="${offerIcon}" alt="" class="tile-offer-img" loading="lazy">`
-          : `<ion-icon name="${isPrimary ? 'lock-open' : 'shield-checkmark'}" class="tile-lock"></ion-icon>`;
+          : `<ion-icon name="lock-open" class="tile-lock"></ion-icon>`;
 
-        offersHtml += `<a href="${offer.url}" target="_blank" class="offer-tile ${tileClass}" title="${offerName}">
+        offersHtml += `<a href="${offer.url}" target="_blank" class="offer-tile primary" title="${offerName}">
           <div class="tile-icon-block">
             ${iconHtml}
           </div>
           <div class="tile-content">
-            <div class="tile-step-label">${stepLabel}</div>
+            <div class="tile-step-label">STEP 1 OF 1</div>
             <div class="tile-title">${offerName}</div>
             <div class="tile-subtitle">${offerAction}</div>
           </div>
@@ -716,14 +708,6 @@ function loadOffersLocker() {
             </div>
           </div>
         </a>`;
-
-        // Reward chip after primary
-        if (isPrimary) {
-          offersHtml += `<div class="tile-reward-chip">
-            <ion-icon name="gift-outline"></ion-icon>
-            Reward: $10 Free Play
-          </div>`;
-        }
       });
 
       offersLockerContainer.innerHTML = offersHtml;
@@ -877,18 +861,6 @@ function openOffersLocker() {
     modal.setAttribute("aria-hidden", "false");
     loadOffersLocker();
     startLockerTimer();
-    startSocialProof();
-
-    // Trigger initial hard shake after a slight delay to ensure modal is rendered
-    setTimeout(() => {
-      triggerInitialShake();
-    }, 100);
-
-    // Set up tiny shake to repeat every 5 seconds
-    if (shakeInterval) {
-      clearInterval(shakeInterval);
-    }
-    shakeInterval = setInterval(triggerTinyShake, 5000);
 
     // Exit-intent detection
     window._exitIntentShown = false;
